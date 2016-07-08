@@ -1,0 +1,63 @@
+import datetime
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+
+from .forms import UserForm, AnswerForm
+from .models import AnswerSheet
+from vaa.utils import render_with
+
+@render_with("home.html")
+def home(request):
+    return {}
+
+@render_with("userpage.html")
+def userpage(request):
+    candidate = request.user.candidate_set.all()[0]
+    return {
+        'userpageform': UserForm(
+            {
+                'first_name':request.user.first_name,
+                'last_name':request.user.last_name,
+                'ssn':candidate.ssn,
+                'last_answer':candidate.answersheet_set.order_by('-timestamp').first() or None,
+                'picture':candidate.picture,
+                'blurb':candidate.blurb,
+            }
+        )
+        }
+
+def userupdate(request):
+    userform = UserForm(request.POST)
+    candidate = request.user.candidate_set.all()[0]
+    if userform.is_valid():
+        data = userform.cleaned_data
+        request.user.first_name = data['first_name']
+        request.user.last_name = data['last_name']
+        candidate.ssn = data['ssn']
+        candidate.picture = data['picture']
+        candidate.blurb = data['blurb']
+        request.user.save()
+        candidate.save()
+    return HttpResponseRedirect("/userpage/")
+
+
+@render_with("candanswers.html")
+def candanswer(request):
+    return {
+        'answerform':AnswerForm()
+        }
+
+def candreply(request):
+    form = AnswerForm(request.POST)
+    if form.is_valid() == False:
+        return render(request, "candanswers.html", {'answerform':form})
+    data = form.get_data()
+    print data
+    AnswerSheet(
+        timestamp=datetime.datetime.utcnow(),
+        candidate=request.user.candidate_set.all()[0],
+        answers=[[k,v] for k,v in data]
+    ).save()
+    return HttpResponseRedirect("/userpage/")

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+<thead>
+<tr><td>Frambjóðandi</td><td>Hversu sammála</td></tr>
+</thead>
+<tbody>
+{% for cand, percent in data %}
+<tr><td>{{ cand.name }}</td><td>{{ percent }}</td>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}

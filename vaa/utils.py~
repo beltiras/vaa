@@ -1,0 +1,15 @@
+from django.shortcuts import render
+
+
+def trunc(text, size):
+    return text[:size] + (" ..." if len(text) > size else "")
+
+
+class render_with:
+    def __init__(self, template):
+        self.template = template
+
+    def __call__(self, f):
+        def wrapped(*args, **kwargs):
+            return render(args[0], self.template, f(*args, **kwargs))
+        return wrapped
