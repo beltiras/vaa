@@ -58,7 +58,6 @@ def candreply(request):
     if form.is_valid() == False:
         return render(request, "candanswers.html", {'answerform':form})
     data = form.get_data()
-    print data
     AnswerSheet(
         timestamp=datetime.datetime.utcnow(),
         candidate=request.user.candidate_set.all()[0],
@@ -80,7 +79,6 @@ def compare(request):
     if form.is_valid() == False:
         return render(request, "voter_form.html", {'voterform':form})
     voterdata = form.get_data()
-    print voterdata
     max_distance = max_d(voterdata)
     context = {'data': sorted(
         [(cand, 1.0 - (float(cand.compare(voterdata))/float(max_distance))) for cand in Candidate.objects.all() if cand.last_answers],
