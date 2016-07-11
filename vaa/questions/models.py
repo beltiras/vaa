@@ -24,7 +24,10 @@ class Candidate(models.Model):
 
     @property
     def last_answers(self):
-        return self.answersheet_set.order_by('-timestamp').first().answers
+        a = self.answersheet_set.order_by('-timestamp').first()
+        if a:
+            return a.answers
+        return None
 
     def compare(self, other_data, method=simple_distance):
         d = zipvalues(other_data, d=True)
