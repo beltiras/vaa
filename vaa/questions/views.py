@@ -1,11 +1,11 @@
 import datetime
 
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404, render
 
 
 from .forms import UserForm, AnswerForm, VoterForm
-from .models import AnswerSheet, Candidate
+from .models import AnswerSheet, Candidate, Question
 from vaa.utils import render_with, max_d
 
 @render_with("home.html")
@@ -84,3 +84,14 @@ def compare(request):
         [(cand, 1.0 - (float(cand.compare(voterdata))/float(max_distance))) for cand in Candidate.objects.all() if cand.last_answers],
         key=lambda i:i[1], reverse=True)}
     return context
+
+
+@render_with("candidate_page.html")
+def candidate_page(request, pk):
+    candidate = get_object_or_404(Candidate, pk=pk)
+    questions = Question.objects.filter(active=True).order_by('pk')
+    if candidate.last_answers:
+        la = dict(candidate.last_answers)
+        return {'answers':True, 'questions':[(q,la.get("t_%s"%q.pk, ""), la.get("q_%s"%q.pk,6)) for q in questions], 'cand':candidate}
+    else:
+        return {'answers':False, 'cand':candidate }

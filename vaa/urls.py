@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^candanswer/', vaav.candanswer),
     url(r'^voterform/', vaav.voterform),
     url(r'^compare/', vaav.compare),
+    url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

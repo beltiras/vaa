@@ -45,6 +45,9 @@ class Question(models.Model):
         istext = self.questiontext_set.get(lang="IS")
         return trunc(istext.text, 30)
 
+    def get_text(self, lang="IS"):
+        return self.questiontext_set.get(lang=lang)
+
 
 class QuestionText(models.Model):
     lang = models.CharField(max_length=2)

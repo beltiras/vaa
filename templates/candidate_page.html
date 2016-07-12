@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ cand.name }}</h2>
+<table class="table">
+<thead>
+<tr><td>Spurning</td><td>Afstaða frambjóðanda</td><td>Nánari afstaða frambjóðanda</td>
+</thead>
+<tbody>
+{% for question, c_text, c_pos in questions %}
+<tr><td>{{ question.get_text }}</td><td>{{ c_pos }}</td><td>{{ c_text }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}
