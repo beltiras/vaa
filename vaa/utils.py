@@ -6,7 +6,7 @@ def trunc(text, size):
 
 
 def max_d(dataset):
-    return sum([[4,3,2,3,4,1][q]*i for q, i in zipvalues(dataset)])
+    return sum([[4,3,2,3,4,1][q-1]*i for q, i in zipvalues(dataset)])
 
 
 def zipvalues(dataset, d=False):
