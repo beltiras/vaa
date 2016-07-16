@@ -1,3 +1,5 @@
+from random import choice
+
 from django.shortcuts import render
 
 
@@ -24,3 +26,6 @@ class render_with:
         def wrapped(*args, **kwargs):
             return render(args[0], self.template, f(*args, **kwargs))
         return wrapped
+
+def randstring(length, charset="abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ01234567890.!"):
+    return "".join([choice(charset) for x in xrange(length)])
