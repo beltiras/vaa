@@ -6,7 +6,7 @@
         <p>Er notendanafn og/eða lykilorð rétt?</p>
     {% endif %}
 
-    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    <form method="post" action="/login/">
         {% csrf_token %}
         <table>
             <tr>
