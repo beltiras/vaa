@@ -19,6 +19,7 @@ class Command(BaseCommand):
         except IOError:
             raise CommandError('IOError, does %s exist?' % options['file'][0])
         data = csv.DictReader(datafile)
+        count = 0
         for row in data:
             active = row.pop("Active")
             order = row.pop("Order")
@@ -27,4 +28,5 @@ class Command(BaseCommand):
             for lang in row:
                 qt = QuestionText(lang=lang, text=row[lang], question=question)
                 qt.save()
-        print "Added",len(data),"questions"
+            count += 1
+        print "Added",count,"questions"
