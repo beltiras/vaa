@@ -45,7 +45,7 @@ class UserForm(forms.Form):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/%s/userupdate/' % settings.INSTANCE_NAME
+        self.helper.form_action = '/userupdate/'
         self.helper.layout = Layout(
             'first_name',
             'last_name',
@@ -88,7 +88,7 @@ class AnswerForm(forms.Form):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/%s/candans/' % settings.INSTANCE_NAME
+        self.helper.form_action = '/candans/'
         layout = zip([Field("q_%s" % q) for q in qs], [Field("t_%s"%q) for q in qs])
         self.helper.layout = Layout(*layout)
         self.helper.add_input(Submit('submit', 'Vista'))
@@ -122,7 +122,7 @@ class VoterForm(forms.Form):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/%s/compare/' % settings.INSTANCE_NAME
+        self.helper.form_action = '/compare/'
         layout = zip([Field("q_%s" % q) for q in qs], [InlineRadios("i_%s"%q) for q in qs])
         self.helper.layout = Layout(*layout)
         self.helper.add_input(Submit('submit', u'Fá samanburð'))
