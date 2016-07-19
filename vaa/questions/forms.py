@@ -32,18 +32,16 @@ class UserForm(forms.Form):
     blurb = forms.CharField(
         label=u"Kynningartexti frambjóðanda",
         max_length=2000,
-        widget=CharsLeftInput(),
+        widget=forms.Textarea,
         required=False,
 
     )
 
     def __init__(self, *args, **kwargs):
+        kwargs.setdefault('label_suffix', '')
         super(UserForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-userform'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-3'
-        self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
         self.helper.form_action = '/%s/userupdate/' % settings.INSTANCE_NAME
         self.helper.layout = Layout(

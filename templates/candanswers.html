@@ -9,10 +9,10 @@
 {% endblock extrahead %}
 
 {% block content %}
-<form action="/compare/" id="id-answerform" method="post">{% csrf_token %}
+<form action="{{ answerform.helper.form_action }}" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
     {% for field in answerform %}
         {% if 'q_' in field.name %}
-        <div id="{{ field.id_for_label }}" class="form-group form-question clearfix">
+        <div id="{{ field.id_for_label }}" class="form-block form-question clearfix">
         {% endif %}
 
             {% if 'q_' in field.name %}
@@ -39,8 +39,8 @@
         </div>
         {% endif %}
     {% endfor %}
-    <div class="form-group form-submit clearfix">
-        <button type="submit" name="submit" class="submit-button">Senda svör</button>
+    <div class="form-block form-submit clearfix">
+        <button type="submit" name="submit" class="button submit-button">Senda svör</button>
     </div>
 </form>
 {% endblock content %}

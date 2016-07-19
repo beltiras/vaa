@@ -8,12 +8,17 @@ body {
 
 /* Spurningar */
 
-.form-group {
+.form-block {
     margin: 100px 0;
     display: block;
     text-align: center;
 }
 
+.form-group {
+    display: block;
+}
+
+.form-user,
 .form-question {
     padding: 50px;
     background: rgb(255, 255, 255);
@@ -104,14 +109,14 @@ h3.qtext-title {
     padding: .75em 1em;
     margin: 5px 0;
     border: 1px solid rgb(233,230,240);
-    transition: 100ms all ease-out;
+    transition: 100ms border-color,color ease-out;
     color: rgb(133,130,140);
 }
 
 .qtext-field textarea:focus {
     outline: none;
     border-color:rgb(133,130,140);
-    transition: 100ms all ease-in;
+    transition: 100ms border-color,color ease-in;
     color: rgb(33,30,40);
 }
 
@@ -124,32 +129,31 @@ h3.qtext-title {
     
 }
 
-.form-submit button {
-    background: rgb(87,43,133);
-    border: none;
-    color: white;
-    font-size: 1.5em;
-    font-weight: 800;
+.form-submit {
+    text-align: center;
+}
+
+.form-user .form-group {
+    margin-bottom: 1.5em;
+}
+
+.form-user label {
+    display: block;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    line-height: 2.5em;
-    width: 15em;
-    cursor: pointer;
-    transition: 150ms all ease;
+    font-size: .8em;
+    letter-spacing: .1em;
+    font-weight: 700;
+    margin-bottom: .25em
 }
 
-.form-submit button:hover {
-    background: rgb(107,63,153);
+.form-user input[type="text"],
+.form-user input[type="email"] {
+    border: 1px solid rgb(233,230,240);
+    padding: .75em 1em;
+    width: 100%;
+    font-size: 1.25em;
+    text-align: center;
 }
-
-.form-submit button:active {
-    background: rgb(87,43,133);
-}
-
-.form-submit button:focus {
-    outline: none;
-}
-
 
 /* Home screen */
 
@@ -181,7 +185,7 @@ h3.qtext-title {
     margin-bottom: 1em;
 }
 
-.home-taketest a.button {
+.button {
     margin-top: 1em;
     background: rgb(87,43,133);
     border: none;
@@ -193,5 +197,33 @@ h3.qtext-title {
     line-height: 2.5em;
     width: 15em;
     cursor: pointer;
-    display: inline-block
+    display: inline-block;
+    transition: 150ms all ease;
+}
+
+.button.submit-button {
+    font-size: 1.5em;
+}
+
+.button:hover {
+    background: rgb(107,63,153);
+}
+
+.button:active {
+    background: rgb(87,43,133);
+}
+
+.button:focus {
+    outline: none;
+}
+
+hr {
+    width: 100%;
+    border-top: 1px solid rgb(233,230,240);
+    margin: 20px 0;
+}
+
+a:not(.button) {
+    color: rgb(87,43,133);
+    text-decoration: underline;
 }
