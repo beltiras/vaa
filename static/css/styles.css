@@ -31,7 +31,8 @@ body {
     margin: 0; padding: 0;
 }
 
-h3.importance-title {
+h3.importance-title,
+h3.qtext-title {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -92,6 +93,37 @@ h3.importance-title {
     color: rgb(233,230,240);
 }
 
+
+.qtext-field textarea {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    min-height: 8em;
+    font-size: 1.1em;
+    line-height: 1.4;
+    padding: .75em 1em;
+    margin: 5px 0;
+    border: 1px solid rgb(233,230,240);
+    transition: 100ms all ease-out;
+    color: rgb(133,130,140);
+}
+
+.qtext-field textarea:focus {
+    outline: none;
+    border-color:rgb(133,130,140);
+    transition: 100ms all ease-in;
+    color: rgb(33,30,40);
+}
+
+.qtext-charsleft {
+    font-size: .75em;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: rgb(133,130,140);
+    
+}
+
 .form-submit button {
     background: rgb(87,43,133);
     border: none;
@@ -103,6 +135,19 @@ h3.importance-title {
     line-height: 2.5em;
     width: 15em;
     cursor: pointer;
+    transition: 150ms all ease;
+}
+
+.form-submit button:hover {
+    background: rgb(107,63,153);
+}
+
+.form-submit button:active {
+    background: rgb(87,43,133);
+}
+
+.form-submit button:focus {
+    outline: none;
 }
 
 

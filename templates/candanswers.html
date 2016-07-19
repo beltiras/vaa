@@ -1,7 +1,68 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags staticfiles %}
+
+{% block title %}Spurningar{% endblock title %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'charsleft-widget/css/charsleft.css' %}">
+<script src="{% static 'charsleft-widget/js/charsleft.js' %}"></script>
+{% endblock extrahead %}
+
 {% block content %}
-{% crispy answerform %}
-{{ answerform.media }}
+<form action="/compare/" id="id-answerform" method="post">{% csrf_token %}
+    {% for field in answerform %}
+        {% if 'q_' in field.name %}
+        <div id="{{ field.id_for_label }}" class="form-group form-question clearfix">
+        {% endif %}
+
+            {% if 'q_' in field.name %}
+            <h2 class="question-text">{{ field.label }}</h2>
+            <div class="question-choices">
+                {{ field }}
+            </div>
+            {% endif %}
+
+            {% if 't_' in field.name %}
+            <h3 class="qtext-title">{{ field.label }}</h3>
+            <div class="qtext-field">
+                <span class="charsleft charsleft-textarea">
+                    <textarea name="{{ field.name }}" id="id_{{ field.name }}"></textarea>
+                    <div class="qtext-charsleft">
+                        <span class="count">{{ field.field.max_length }}</span> stafabil eftir
+                        <span class="maxlength">{{ field.field.max_length }}</span>
+                    </div>
+                </span>
+            </div>
+            {% endif %}            
+
+        {% if 't_' in field.name %}
+        </div>
+        {% endif %}
+    {% endfor %}
+    <div class="form-group form-submit clearfix">
+        <button type="submit" name="submit" class="submit-button">Senda svör</button>
+    </div>
+</form>
 {% endblock content %}
 
+{% block extrabottom %}
+<script>
+    //Handles selecting a radio button
+    $(".question-choices li label").click(
+        function(e) {
+            e.preventDefault();
+            var set = $(this).parents(".question-choices");
+            set.find(":radio").removeAttr("checked","checked");
+            set.find("li.selected").removeClass("selected");
+            $(this).children(":radio").attr("checked","checked");
+            $(this).parents("li").addClass("selected");
+        }
+    );
+
+    $(".charsleft-textarea").charsLeft({
+      'source':'textarea',
+      'dest':".count",
+    });
+
+</script>
+{% endblock extrabottom %}
