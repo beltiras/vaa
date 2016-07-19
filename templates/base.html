@@ -1,12 +1,24 @@
-<html>
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>{% block title %}{% endblock title %}</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-{% block extrahead %}
-{% endblock extrahead %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %} - VAA</title>
+    <link rel="stylesheet" href="{% static 'css/app-reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/grid.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://use.fontawesome.com/690c0e598d.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    {% block extrahead %}
+    {% endblock extrahead %}
 </head>
 <body>
-{% block content %}
-{% endblock content %}
+    <div class="container">
+    {% block content %}
+    {% endblock content %}
+    </div>
+    {% block extrabottom %}
+    {% endblock extrabottom %}
 </body>
+</html>

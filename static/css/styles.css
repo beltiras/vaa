@@ -1,0 +1,148 @@
+body {
+    background: rgb(203,200,210);
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
+    color: rgb(33,30,40);
+}
+
+
+/* Spurningar */
+
+.form-group {
+    margin: 100px 0;
+    display: block;
+    text-align: center;
+}
+
+.form-question {
+    padding: 50px;
+    background: rgb(255, 255, 255);
+}
+
+.form-question h2 {
+    font-weight: 800;
+    font-size: 2em;
+    line-height: 1.125;
+}
+
+.form-question .question-choices ul,
+.form-question .importance-choices ul {
+    list-style-type: none;
+    margin: 0; padding: 0;
+}
+
+h3.importance-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: .9em;
+}
+
+.form-question .importance-choices ul {
+    padding: 5px 0
+}
+
+.form-question .importance-choices li {
+    display: inline-block;
+}
+
+.form-question .importance-choices li label {
+    letter-spacing: 4px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.form-question .question-choices ul input[type="radio"] {
+    display: none;
+}
+
+.form-question .question-choices li label {
+    
+}
+
+.form-question .question-choices {
+    margin: 30px 0;
+}
+
+.form-question .question-choices li label {
+    background: rgb(233,230,240);
+    font-size: 1.5em;
+    margin-top: 5px;
+    padding: 12px 0;
+    display: block;
+    cursor: pointer;
+}
+
+.form-question .question-choices li.selected label {
+    background: rgb(87,43,133);
+    color: white;
+    font-weight: 800;
+}
+
+.form-question .question-choices li.selected label:before {
+    content: "\f058";
+    font-family: FontAwesome;
+}
+
+.form-question .question-choices li:hover label {
+    color: rgb(87,43,133);
+}
+
+.form-question .question-choices li.selected:hover label {
+    color: rgb(233,230,240);
+}
+
+.form-submit button {
+    background: rgb(87,43,133);
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 2.5em;
+    width: 15em;
+    cursor: pointer;
+}
+
+.home-screen {
+    text-align: center;
+    margin: 100px;
+    padding: 50px;
+    background: rgb(255, 255, 255);
+}
+
+.home-label {
+    font-size: .9em;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: rgb(87,43,133);
+    letter-spacing: .1em
+}
+
+.home-title {
+    font-size: 2.5em;
+    font-weight: 800;
+    line-height: 1.125;
+    margin-bottom: .5em;
+}
+
+.home-intro p {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.home-taketest a.button {
+    margin-top: 1em;
+    background: rgb(87,43,133);
+    border: none;
+    color: white;
+    font-size: 1.25em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 2.5em;
+    width: 15em;
+    cursor: pointer;
+    display: inline-block
+}
