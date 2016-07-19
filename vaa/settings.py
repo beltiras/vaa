@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import environ
+root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
+env = environ.Env(DEBUG=(bool, False),) # set default values and casting
+environ.Env.read_env() # reading .env file
 
+SITE_ROOT = root()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,10 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'z9c5o(5rfxzs0y_801pdre#epak)5qoz1y5pt&_&afxg)crsxi'
+SECRET_KEY = env('SECRET_KEY')#'z9c5o(5rfxzs0y_801pdre#epak)5qoz1y5pt&_&afxg)crsxi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -80,12 +85,12 @@ WSGI_APPLICATION = 'vaa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'vaa',                      # Or path to database file if using sqlite3.
+        'NAME': env('INSTANCE_NAME'),                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'vaa',
-        'PASSWORD': 'vaa1234',
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'USER': env('INSTANCE_NAME'),
+        'PASSWORD': env('DB_PASS'),
+        'HOST': env('DB_HOST'),                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
+        'PORT': env('DB_PORT'),                      # Set to empty string for default.
     }
 }
 

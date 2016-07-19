@@ -95,3 +95,5 @@ def candidate_page(request, pk):
         return {'answers':True, 'questions':[(q,la.get("t_%s"%q.pk, ""), la.get("q_%s"%q.pk,6)) for q in questions], 'cand':candidate}
     else:
         return {'answers':False, 'cand':candidate }
+
+    
