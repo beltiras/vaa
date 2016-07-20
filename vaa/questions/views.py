@@ -80,16 +80,17 @@ def voterform(request):
 @render_with("comparison.html")
 def compare(request):
     form = VoterForm(request.POST)
-    if form.is_valid() == False:
-        return render(request, "voter_form.html", {'voterform':form})
+    valid_form = form.is_valid()
+    #    return render(request, "voter_form.html", {'voterform':form})
     voterdata = form.get_data()
-    print voterdata
+    print "voterdata",voterdata
     max_distance = max_d(voterdata)
     context = {'data': sorted(
         [(cand, 1.0 - (float(cand.compare(voterdata))/float(max_distance))) for cand in Candidate.objects.all() if cand.last_answers],
         key=lambda i:i[1], reverse=True)}
-    request.session['candlist'] = context['data']
-    request.session['voterdata'] = voterdata
+    #request.session['candlist'] = context['data']
+    #request.session['voterdata'] = voterdata
+    print "context",context
     return context
 
 

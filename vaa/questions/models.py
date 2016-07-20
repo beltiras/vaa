@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
@@ -9,9 +10,21 @@ def simple_distance(this, other):
     other = other[0]
     this = int(this)
     if this == 6 or other == 6:
-        return 1 * other_mul
+        return settings.INDECISION_PARAMETER * other_mul
     else:
         return (max(this, other) - min(this, other)) * other_mul
+
+class Question(models.Model):
+    order = models.IntegerField()
+    active = models.BooleanField()
+
+    def __unicode__(self):
+        istext = self.questiontext_set.get(lang="IS")
+        return trunc(istext.text, 30)
+
+    def get_text(self, lang="IS"):
+        return self.questiontext_set.get(lang=lang)
+
 
 class Candidate(models.Model):
     user = models.ForeignKey(User)
@@ -32,23 +45,15 @@ class Candidate(models.Model):
         return None
 
     def compare(self, other_data, method=simple_distance):
-        d = zipvalues(other_data, d=True)
-        return sum([method(value, d[key]) for key, value in self.last_answers if 'q_' in key])
+        d = dict(zipvalues(other_data, d=True))
+        q_pk = [q.pk for q in Question.objects.filter(active=True)]
+        la = dict(self.last_answers)
+        if not la:
+            la = dict([('q_%s' % q_pk, 6) for pk in q_pk])
+        return sum([method(la.get('q_%s' % pk, 6), d.get('q_%s' % pk, (3,6))) for pk in q_pk])
 
     def name(self):
         return self.user.get_full_name()
-
-
-class Question(models.Model):
-    order = models.IntegerField()
-    active = models.BooleanField()
-
-    def __unicode__(self):
-        istext = self.questiontext_set.get(lang="IS")
-        return trunc(istext.text, 30)
-
-    def get_text(self, lang="IS"):
-        return self.questiontext_set.get(lang=lang)
 
 
 class QuestionText(models.Model):

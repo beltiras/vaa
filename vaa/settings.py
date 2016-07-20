@@ -184,6 +184,9 @@ LOGGING = {
     },
 }
 
+
+INDECISION_PARAMETER = 2 # How much difference to calculate if either voter or candidate is undecided on an issue
+
 try:
     from local_settings import *
 except ImportError:

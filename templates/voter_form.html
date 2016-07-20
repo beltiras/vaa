@@ -5,6 +5,7 @@
 
 {% block content %}
 <form action="{{ voterform.helper.form_action }}" id="{{ voterform.helper.form_id }}" method="{{ voterform.helper.form_method }}">{% csrf_token %}
+  {% csrftoken %}
     {% for field in voterform %}
         {% if 'q_' in field.name %}
         <div id="{{ field.id_for_label }}" class="form-block form-question clearfix">
