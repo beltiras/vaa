@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Candidate, Question, QuestionText, AnswerSheet, AnswerText
+from .models import Candidate, Question, QuestionText, AnswerSheet, AnswerText, Election
 
 
 class QuestionTextInline(admin.TabularInline):
@@ -22,6 +22,8 @@ class QuestionAdmin(admin.ModelAdmin):
 class AnswerSheetAdmin(admin.ModelAdmin):
     pass
 
+class ElectionAdmin(admin.ModelAdmin):
+    pass
 
 class AnswerTextAdmin(admin.ModelAdmin):
     pass
@@ -30,3 +32,4 @@ admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(AnswerSheet, AnswerSheetAdmin)
 admin.site.register(AnswerText, AnswerTextAdmin)
+admin.site.register(Election, ElectionAdmin)
