@@ -1,0 +1,5 @@
+<ul>
+{% for headitem in request.heads %}
+  <li><a href="/page/{{ headitem.page_url }}">{{ headitem.menubar }}</a></li>
+{% endfor %}
+</ul>

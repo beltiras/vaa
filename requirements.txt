@@ -12,9 +12,11 @@ pexpect==4.2.0
 pickleshare==0.7.2
 psycopg2==2.6.1
 ptyprocess==0.5.1
-python-redis==0.0.7
 simplegeneric==0.8.1
 six==1.10.0
 traitlets==4.2.2
 wsgiref==0.1.2
 git+https://github.com/timmyomahony/django-charsleft-widget.git
+django-environ==0.4.0
+Markdown==2.6.6
+django-redis==4.4.3

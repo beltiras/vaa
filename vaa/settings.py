@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'vaa.questions',
+    'vaa.staticpages',
     'crispy_forms',
     'charsleft_widget'
 ]
@@ -53,7 +54,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-#    'vaa.questions.middleware.UrlProtectionMW',
+    'vaa.staticpages.middleware.StaticPageMW',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -184,6 +185,16 @@ LOGGING = {
     },
 }
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 INDECISION_PARAMETER = 2 # How much difference to calculate if either voter or candidate is undecided on an issue
 

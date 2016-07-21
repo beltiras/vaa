@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 
 from vaa.questions import views as vaav
-
+from vaa.staticpages import views as vaas
 urlpatterns = [
     url(r'^userpage/$', vaav.userpage),
     url(r'^$', vaav.home),
@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^admin/', admin.site.urls),
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
+    url(r'^page/(?P<slug>[\w\d_-]+)', vaas.page),
+]
