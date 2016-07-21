@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand, CommandError
 
 from vaa.questions.models import Candidate
-from vaa.utils import randstring
 
 
 class Command(BaseCommand):
@@ -29,6 +28,6 @@ class Command(BaseCommand):
             user = User(username=email, first_name=f_name, last_name=l_name, email=email)
             user.set_unusable_password()
             user.save()
-            candidate = Candidate(user=user, ssn=ssn, claimed=False, claim_token=randstring(64))
+            candidate = Candidate(user=user, ssn=ssn, claimed=False)
             candidate.save()
             print email, "created"

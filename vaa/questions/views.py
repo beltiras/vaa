@@ -46,54 +46,59 @@ def userupdate(request):
 
 
 @render_with("candanswers.html")
-def candanswer(request):
-    last_answers = request.user.candidate_set.first().last_answers
+def candanswer(request, election):
+    last_answers = getattr(request.user.candidate_set.filter(election__slug=election).first(), "last_answers", None)
     if last_answers:
-        form = AnswerForm(initial=dict(last_answers))
+        form = AnswerForm(initial=dict(last_answers), election=election)
     else:
-        form = AnswerForm()
+        form = AnswerForm(election=election)
     return {
-        'answerform':form
+        'answerform':form,
+        'election':election,
         }
 
 
-def candreply(request):
-    form = AnswerForm(request.POST)
+def candreply(request, election):
+    form = AnswerForm(request.POST, election=election)
     if form.is_valid() == False:
-        return render(request, "candanswers.html", {'answerform':form})
+        return render(request, "candanswers.html", {'answerform':form, 'election':election})
     data = form.get_data()
     AnswerSheet(
         timestamp=datetime.datetime.utcnow(),
-        candidate=request.user.candidate_set.all()[0],
+        candidate=request.user.candidate_set.filter(election__slug=election).first(),
         answers=[[k,v] for k,v in data]
     ).save()
     return HttpResponseRedirect("/userpage/")
 
 
 @render_with("voter_form.html")
-def voterform(request):
-    form = VoterForm()
-    return {'voterform':form}
+def voterform(request, election):
+    form = VoterForm(election=election)
+    return {'voterform':form, 'election':election}
 
 
 
 @render_with("comparison.html")
-def compare(request):
+def compare(request, election):
     form = VoterForm(request.POST)
     valid_form = form.is_valid()
     #    return render(request, "voter_form.html", {'voterform':form})
     voterdata = form.get_data()
-    print "voterdata",voterdata
     max_distance = max_d(voterdata)
     context = {'data': sorted(
-        [(cand, 1.0 - (float(cand.compare(voterdata))/float(max_distance))) for cand in Candidate.objects.all() if cand.last_answers],
-        key=lambda i:i[1], reverse=True)}
-    #request.session['candlist'] = context['data']
-    #request.session['voterdata'] = voterdata
-    print "context",context
+        [(
+            cand, 1.0 - (
+                float(cand.compare(voterdata))/float(max_distance)
+            )) for cand in Candidate.objects.filter(
+                election__slug=election
+            ) if cand.last_answers],
+        key=lambda i:i[1], reverse=True),
+               'election':election}
+    request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']] # hoping not to need this, use caching instead
+    request.session['voterdata'] = voterdata # ditto, but maybe that is a bad plan
     return context
 
-
+"""
 @render_with("candidate_page.html")
 def candidate_page(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
@@ -107,3 +112,4 @@ def candidate_page(request, pk):
     else:
         return {'answers':False, 'cand':candidate }
 
+"""

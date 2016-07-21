@@ -14,9 +14,18 @@ def simple_distance(this, other):
     else:
         return (max(this, other) - min(this, other)) * other_mul
 
+class Election(models.Model):
+    ends = models.DateTimeField() # Time after which new answers from candidates will not be accepted
+    slug = models.CharField(max_length=64) # URL access, pref. something like reykjavik2016 or nordvest2016
+
+    def __unicode__(self):
+        return self.slug
+
+
 class Question(models.Model):
     order = models.IntegerField()
     active = models.BooleanField()
+    election = models.ForeignKey(Election)
 
     def __unicode__(self):
         istext = self.questiontext_set.get(lang="IS")
@@ -31,8 +40,8 @@ class Candidate(models.Model):
     ssn = models.CharField(max_length=11)
     picture = models.ImageField(null=True, blank=True)
     blurb = models.TextField()
-    claimed = models.BooleanField()
-    claim_token = models.CharField(max_length=64)
+    election = models.ForeignKey(Election)
+
 
     def __unicode__(self):
         return self.user.get_full_name()
@@ -46,7 +55,7 @@ class Candidate(models.Model):
 
     def compare(self, other_data, method=simple_distance):
         d = dict(zipvalues(other_data, d=True))
-        q_pk = [q.pk for q in Question.objects.filter(active=True)]
+        q_pk = [q.pk for q in Question.objects.filter(active=True, election=self.election)]
         la = dict(self.last_answers)
         if not la:
             la = dict([('q_%s' % q_pk, 6) for pk in q_pk])

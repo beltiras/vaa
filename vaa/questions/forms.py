@@ -60,10 +60,11 @@ class AnswerForm(forms.Form):
     def __init__(self, *args, **kwargs):
         initial = kwargs.pop('initial', None)
         lang = kwargs.pop('language', "IS")
+        election = kwargs.pop('election', 'reykjavik2016') # TODO: generalize the default
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
         choices = [(str(at.mod), at.text) for at in answertexts]
         super(AnswerForm, self).__init__(*args, **kwargs)
-        qs = [q.pk for q in Question.objects.filter(active=True)]
+        qs = [q.pk for q in Question.objects.filter(active=True, election__slug=election)]
         for question in Question.objects.filter(active=True):
            self.fields['q_%s' % question.pk] = forms.ChoiceField(
                label=question.questiontext_set.filter(lang=lang)[0].text,
@@ -98,11 +99,12 @@ class AnswerForm(forms.Form):
 class VoterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         lang = kwargs.pop('language', "IS")
+        election = kwargs.pop('election', 'reykjavik2016')
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
         choices = [(str(at.mod), at.text) for at in answertexts]
         super(VoterForm, self).__init__(*args, **kwargs)
         qs = [q.pk for q in Question.objects.filter(active=True)]
-        for question in Question.objects.filter(active=True):
+        for question in Question.objects.filter(active=True, election__slug=election):
            self.fields['q_%s' % question.pk] = forms.ChoiceField(
                label=question.questiontext_set.filter(lang=lang)[0].text,
                widget=forms.RadioSelect,

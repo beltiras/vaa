@@ -9,7 +9,7 @@
 {% endblock extrahead %}
 
 {% block content %}
-<form action="{{ answerform.helper.form_action }}" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
+<form action="{{ answerform.helper.form_action }}/{{ election }}/" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
     {% for field in answerform %}
         {% if 'q_' in field.name %}
         <div id="{{ field.id_for_label }}" class="form-block form-question clearfix">
