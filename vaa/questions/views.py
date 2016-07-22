@@ -2,13 +2,14 @@ import datetime
 
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.cache import cache_page
 
 
 from .forms import UserForm, AnswerForm, VoterForm
 from .models import AnswerSheet, Candidate, Question
 from vaa.utils import render_with, max_d
 
-
+@cache_page(60*5)
 @render_with("home.html")
 def home(request):
     return {}

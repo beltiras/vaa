@@ -16,6 +16,9 @@ class Page(models.Model):
     place_in_menubar = models.BooleanField(u"Setja þessa síðu í síðuhaus")
     order_in_menubar = models.IntegerField(u"Röð í síðuhaus", unique=True, db_index=True)
 
+    def __unicode__(self):
+        return self.menubar
+
     def render(self):
         if self.text_type == 'H':
             return self.text
