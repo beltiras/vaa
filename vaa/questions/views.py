@@ -18,7 +18,7 @@ def home(request):
 @render_with("userpage.html")
 def userpage(request):
     candidate = request.user.candidate_set.all()[0]
-    last_answers = candidate.answersheet_set.first()
+    last_answers = candidate.answersheet_set.order_by('-timestamp')
     form_context =  {
                 'first_name':request.user.first_name,
                 'last_name':request.user.last_name,
@@ -27,7 +27,7 @@ def userpage(request):
                 'blurb':candidate.blurb,
                 }
     if last_answers:
-        form_context['last_answer'] = last_answers.timestamp
+        form_context['last_answer'] = last_answers[0].timestamp
     return { 'userpageform': UserForm(form_context)}
 
 
