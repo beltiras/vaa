@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^voterform/(?P<election>[\w\d]+)/$', vaav.voterform),
     url(r'^compare/(?P<election>[\w\d]+)/$', vaav.compare),
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'extra_context':{'next':'/userpage/'}}),
     url(r'^admin/', admin.site.urls),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
