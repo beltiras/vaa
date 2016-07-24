@@ -28,7 +28,10 @@ class UserForm(forms.Form):
         widget=forms.TextInput(attrs={'size': '12'})
     )
     last_answer = forms.DateTimeField(label=u"Spurningum svarað", required=False)
-    picture = forms.ImageField(label=u"Mynd (til kynningar)", required=False)
+    picture = forms.ImageField(
+        label=u"Mynd (til kynningar)",
+        required=False,
+        upload_to=settings.MEDIA_UPLOADS + 'cand_pics')
     blurb = forms.CharField(
         label=u"Kynningartexti frambjóðanda",
         max_length=2000,

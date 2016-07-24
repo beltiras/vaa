@@ -198,6 +198,8 @@ CACHES = {
 
 INDECISION_PARAMETER = 2 # How much difference to calculate if either voter or candidate is undecided on an issue
 
+MEDIA_UPLOADS = '/var/www/vaamedia/'
+
 try:
     from local_settings import *
 except ImportError:
