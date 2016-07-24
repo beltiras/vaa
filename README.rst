@@ -4,6 +4,7 @@ Voter Assistance Application
 Installation
 -----
 OS requirements: Postgresql 9.4+, redis-server, Python 2.7, python-virtualenv, psycopg2::
+
   cd /var/www
   git clone [github_url]
   virtualenv vaa_env
@@ -13,6 +14,7 @@ OS requirements: Postgresql 9.4+, redis-server, Python 2.7, python-virtualenv, p
   # Make the database
   python manage.py migrate
   python manage.py createsuperuser
+
 Use
 -----
 There are two management commands of note, qimport and cand_import.  They take csv files as arguments as well as the slug of the election the data are meant for.  cand.csv and questions.csv show the format.  Google docs outputs the proper encoding for latin-1 characters.
