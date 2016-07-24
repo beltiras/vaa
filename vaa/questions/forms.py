@@ -31,7 +31,7 @@ class UserForm(forms.Form):
     picture = forms.ImageField(
         label=u"Mynd (til kynningar)",
         required=False,
-        upload_to=settings.MEDIA_UPLOADS + 'cand_pics')
+    )
     blurb = forms.CharField(
         label=u"Kynningartexti frambjóðanda",
         max_length=2000,

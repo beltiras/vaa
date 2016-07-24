@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import cache_page
@@ -8,6 +9,7 @@ from django.views.decorators.cache import cache_page
 from .forms import UserForm, AnswerForm, VoterForm
 from .models import AnswerSheet, Candidate, Question
 from vaa.utils import render_with, max_d
+
 
 @cache_page(60*5)
 @render_with("home.html")
@@ -31,6 +33,7 @@ def userpage(request):
     return { 'userpageform': UserForm(form_context)}
 
 
+@login_required
 def userupdate(request):
     userform = UserForm(request.POST)
     candidate = request.user.candidate_set.all()[0]
@@ -46,6 +49,7 @@ def userupdate(request):
     return HttpResponseRedirect("/userpage/")
 
 
+@login_required
 @render_with("candanswers.html")
 def candanswer(request, election):
     last_answers = getattr(request.user.candidate_set.filter(election__slug=election).first(), "last_answers", None)
@@ -59,6 +63,7 @@ def candanswer(request, election):
         }
 
 
+@login_required
 def candreply(request, election):
     form = AnswerForm(request.POST, election=election)
     if form.is_valid() == False:
@@ -72,13 +77,14 @@ def candreply(request, election):
     return HttpResponseRedirect("/userpage/")
 
 
+@user_passes_test(lambda u: u.is_superuser)
 @render_with("voter_form.html")
 def voterform(request, election):
     form = VoterForm(election=election)
     return {'voterform':form, 'election':election}
 
 
-
+@user_passes_test(lambda u: u.is_superuser)
 @render_with("comparison.html")
 def compare(request, election):
     form = VoterForm(request.POST)

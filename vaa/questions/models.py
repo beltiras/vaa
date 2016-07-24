@@ -38,7 +38,11 @@ class Question(models.Model):
 class Candidate(models.Model):
     user = models.ForeignKey(User)
     ssn = models.CharField(max_length=11)
-    picture = models.ImageField(null=True, blank=True)
+    picture = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=settings.MEDIA_UPLOADS + 'cand_pics'
+    )
     blurb = models.TextField()
     election = models.ForeignKey(Election)
 

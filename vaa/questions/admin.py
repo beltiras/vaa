@@ -3,8 +3,6 @@ from django.contrib import admin
 
 from .models import Candidate, Question, QuestionText, AnswerSheet, AnswerText, Election
 
-from vaa.utils import introductory_email
-
 
 def send_introductory_email(modeladmin, request, queryset):
     """
