@@ -33,12 +33,3 @@ class render_with:
 def randstring(length, charset="abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ01234567890.!"):
     return "".join([choice(charset) for x in xrange(length)])
 
-def pass_reset(cands):
-    """
-    User this to send emails to the candidates to claim their users
-    """
-    cand_users = [cand.user for cand in cands]
-    from django.contrib.auth.forms import PasswordResetForm
-    p=PasswordResetForm()
-    p.users_cache = [c.user for c in cands]
-    p.save()

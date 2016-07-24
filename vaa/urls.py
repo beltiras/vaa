@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 
 from vaa.questions import views as vaav
 from vaa.staticpages import views as vaas
+
 urlpatterns = [
     url(r'^userpage/$', vaav.userpage),
     url(r'^$', vaav.home),
@@ -29,7 +30,8 @@ urlpatterns = [
     url(r'^voterform/(?P<election>[\w\d]+)/$', vaav.voterform),
     url(r'^compare/(?P<election>[\w\d]+)/$', vaav.compare),
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'extra_context':{'next':'/userpage/'}}),
+    url('^', include('django.contrib.auth.urls')),
+    #url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'extra_context':{'next':'/userpage/'}}),
     url(r'^admin/', admin.site.urls),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [

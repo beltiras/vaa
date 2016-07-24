@@ -1,0 +1,12 @@
+{% load i18n %}{% autoescape off %}
+Hæ kæri frambjóðandi í prófkjöri Pírata á höfuðborgarsvæðinu
+
+Hér fyrir neðan er tengill á innskráningu á vef sem er ætlað að auðvelda kjósendum í prófkjöri Pírata á höfuðborgarsvæðinu að bera sig saman við frambjóðendur. Nánari upplýsingar verða sendar á næstu mínútum í öðrum tölvupósti. 
+
+{% block reset_link %}
+{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+{% endblock %}
+Notendanafnið þitt: {{ user.get_username }}
+
+Yarrrr!
+{% endautoescape %}
