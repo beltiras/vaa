@@ -93,3 +93,17 @@ class AnswerSheet(models.Model):
 
     def __unicode__(self):
         return self.candidate.user.get_full_name()
+
+
+class PermanentResult(models.Model):
+    ranks = JSONField()
+    lookup = models.CharField(max_length=40)
+
+    def get_list(self):
+        return [
+            (rank, Candidate.objects.get(pk=cand_pk), percent) for rank, cand_pk, percent in self.ranks.items()
+            ]
+
+class QuestionSheet(models.Model):
+    questions = JSONField()
+    lookup = models.CharField(max_length=40)

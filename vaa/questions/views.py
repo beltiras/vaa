@@ -1,5 +1,7 @@
 import datetime
 
+from hashlib import sha1
+
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
@@ -7,7 +9,7 @@ from django.views.decorators.cache import cache_page
 
 
 from .forms import UserForm, AnswerForm, VoterForm
-from .models import AnswerSheet, Candidate, Question
+from .models import AnswerSheet, Candidate, Question, PermanentResult, QuestionSheet
 from vaa.utils import render_with, max_d
 
 
@@ -81,7 +83,7 @@ def candreply(request, election):
 @render_with("voter_form.html")
 def voterform(request, election):
     form = VoterForm(election=election)
-    return {'voterform':form, 'election':election}
+    return { 'voterform':form, 'election':election }
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -89,8 +91,14 @@ def voterform(request, election):
 def compare(request, election):
     form = VoterForm(request.POST)
     valid_form = form.is_valid()
-    #    return render(request, "voter_form.html", {'voterform':form})
     voterdata = form.get_data()
+    voter_hash = sha1(str(voterdata)).hexdigest
+    voter_data_obj = QuestionSheet.objects.filter(lookup=voter_hash)
+    if not voter_data_obj:
+        voter_data_obj = QuestionSheet(questions=voterdata, lookup=voter_hash)
+        voter_data_obj.save()
+    else:
+        voter_data_obj = voter_data_obj[0]
     max_distance = max_d(voterdata)
     context = {'data': sorted(
         [(
@@ -101,10 +109,34 @@ def compare(request, election):
             ) if cand.last_answers],
         key=lambda i:i[1], reverse=True),
                'election':election}
-    request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']] # hoping not to need this, use caching instead
-    request.session['voterdata'] = voterdata # ditto, but maybe that is a bad plan
+    perm_result = [(rank, cand.pk, percent) for rank, (cand, percent) in zip(xrange(1, len(context['data']) + 1), context['data'])]
+    pr_hash = sha1(str(perm_result)).hexdigest
+    pr_obj = PermanentResult.objects.filter(lookup=pr_hash)
+    if not pr_obj:
+        pr_obj = PermanentResult(ranks=perm_result, lookup=pr_hash)
+        pr_obj.save()
+    else:
+        pr_obj = pr_obj[0]
+    request.session['candlist'] = pr_hash
+    request.session['voterdata'] = voter_hash
     return context
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@render_with("voter_form.html")
+def load_answers(request, election, lookup):
+    qs_obj = get_object_or_404(QuestionSheet, lookup=lookup)
+    form = VoterForm(election=election, initial=qs_obj.questions)
+    return { 'voterform':form, 'election':election }
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@render_with("comparison_page.html")
+def comparison_page(request, election, lookup):
+    pr_obj = get_object_or_404(PermanentResult, lookup=lookup)
+    return { 'data': pr_obj.ranks }
+
+    
 """
 @render_with("candidate_page.html")
 def candidate_page(request, pk):
