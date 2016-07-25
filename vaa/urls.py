@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^compare/(?P<election>[\w\d]+)/$', vaav.compare),
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
     url('^', include('django.contrib.auth.urls')),
-    #url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'extra_context':{'next':'/userpage/'}}),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', { 'extra_context':{'next':'/userpage/'}}),
     url(r'^admin/', admin.site.urls),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
