@@ -7,10 +7,14 @@
     <h4 class="home-label">Prófkjörsapp Pírata</h4>
     <h1 class="home-title">Hver er þinn frambjóðandi?</h1>
     <div class="home-intro">
+      {% if page %}
+        {{ page.0.render | safe }}
+      {% else %}
       <p>Í ljósi fjölda frambjóðenda í sameinuðu prófkjöri höfuðborgarsvæðisins ákváðum við að setja upp hugbúnað sem auðveldar hinum almenna pírata að bera saman afstöðu frambjóðenda við sína eigin. Hugbúnaðurinn er svokallaður Voters Advice Application (VAA), svipaður hugbúnaður var t.d. notaður í kosningunni til Stjórnlagaráðs.</p>
       <p>Virkni hans byggir á því að frambjóðendur svari því hversu (ó)sammála þeir eru ákveðnum fullyrðingum sem almennir notendur svara síðan líka og sjá þá skýrt hvaða frambjóðendur hafa svipað afstöðu í þeim málum sem spurt er um og geta í framhaldi af því kynnt sér þá frambjóðendur betur sem líkastir þeim eru í skoðunum.</p>
       <p>Kerfið er nú opið fyrir frambjóðendur til að setja inn sín svör og 2. ágúst verður opnað fyrir almenning að bera sig saman við frambjóðendur. Frambjóðendur munu áfram geta breytt og bætt við sín svör þar til prófkjöri líkur. Að prófkjöri loknu verður lokað fyrir allar breytingar og vefurinn geymdur í óbreyttu ástandi, áfram verður hægt að bera sig saman við frambjóðendur.</p>
       <p>Frambjóðendur hafa verið búnir til í kerfinu og boðsbréf verið send til þeirra með notandanafni og bráðabirgðalykilorði. Það boðsbréf gæti hafa lent í Spam möppu í póstforritum, vinsamlegast athugaðu það ef þú ert frambjóðandi og ert að reyna að skrá þig inn.</p>
+      {% endif %}
     </div>
     <div class="home-taketest">
         <a href="/voterform/reykjavik2016/" class="button">Taka prófið! (óvirkt til 2. ágúst)</a>

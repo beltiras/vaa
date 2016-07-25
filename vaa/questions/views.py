@@ -8,13 +8,17 @@ from django.views.decorators.cache import cache_page
 
 from .forms import UserForm, AnswerForm, VoterForm
 from .models import AnswerSheet, Candidate, Question
+
+from vaa.staticpages.models import Page
 from vaa.utils import render_with, max_d
 
 
 @cache_page(60*5)
 @render_with("home.html")
 def home(request):
-    return {}
+    return {
+        'page':Page.objects.filter(page_url="frontpage")
+    }
 
 
 @render_with("userpage.html")
