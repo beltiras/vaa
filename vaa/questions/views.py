@@ -40,7 +40,7 @@ def userpage(request):
         'receipt': request.GET.get('receipt', False)
     }
     if candidate.picture.name:
-        context.update('picture',candidate.picture.file.name.split("/")[-1])
+        context.update({'picture': candidate.picture.file.name.split("/")[-1]})
     return context
 
 @login_required
