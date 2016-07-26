@@ -86,7 +86,7 @@ class AnswerForm(forms.Form):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/candans/'
+        self.helper.form_action = '/candanswer/%s/' % election
         layout = zip([Field("q_%s" % q) for q in qs], [Field("t_%s"%q) for q in qs])
         self.helper.layout = Layout(*layout)
         self.helper.add_input(Submit('submit', 'Vista'))

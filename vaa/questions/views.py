@@ -66,10 +66,8 @@ def userupdate(request):
 def candanswer(request, election):
     last_answers = getattr(request.user.candidate_set.filter(election__slug=election).first(), "last_answers", None)
     if last_answers:
-        print "filling form", last_answers
         form = AnswerForm(initial=dict(last_answers), election=election)
     else:
-        print "not filling form"
         form = AnswerForm(election=election)
     return {
         'answerform':form,
@@ -125,7 +123,7 @@ def oldanswers(request, election):
     for key in last_answers:
         if "q_" in key:
             number = key[2:]
-            last_answers[key] = remap % (number, last_answers[key])
+            last_answers[key] = remap % (number, int(last_answers[key])-1)
     if last_answers:
         return HttpResponse(json.dumps(last_answers.items()), content_type="application/json")
     return HttpResponse("[]", content_type="application/json")

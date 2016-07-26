@@ -10,10 +10,10 @@
 {% endblock extrahead %}
 
 {% block content %}
-<form action="{{ answerform.helper.form_action }}{{ election }}/" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
+<form action="{{ answerform.helper.form_action }}" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
     {% for field in answerform %}
         {% if 'q_' in field.name %}
-        <div id="{{ field.id_for_label }}" class="form-block form-question clearfix">
+        <div id="{{ field.id_for_label }}_label" class="form-block form-question clearfix">
         {% endif %}
 
             {% if 'q_' in field.name %}
@@ -71,20 +71,18 @@ var json={
 };
 // perpopulate if there are old answers
 $.getJSON('/oldanswers/{{ election }}/', function(jsondata) {
-  console.log(jsondata);
-  //var arrayLength = jsondata.length;
-  for (var key in jsondata) {
-    console.log(jsondata[key]);
+  var arrayLength = jsondata.length;
+  for (var kv in jsondata) {
+    var key = jsondata[kv][0];
+    var value = jsondata[kv][1]
     var $el = $('[name="'+key+'"]'),
     type = $el.attr('type');
-
     switch(type){
         case 'radio':
-            console.log($el.filter('[value="'+jsondata[key]+'"]'));
-            $("#"+jsondata[key]).prop('checked', true);
+            $("#"+value).click()
             break;
         default:
-            $el.val(jsondata[key]);
+            $el.val(value);
 		      }
 		      }
 
