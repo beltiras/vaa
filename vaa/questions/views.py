@@ -2,10 +2,10 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
-from django.http import HttpResponseRedirect, Http404
+from django.core.serializers.json import json
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import cache_page
-
 
 from .forms import UserForm, AnswerForm, VoterForm
 from .models import AnswerSheet, Candidate, Question
@@ -35,14 +35,15 @@ def userpage(request):
                 }
     if last_answers:
         form_context['last_answer'] = last_answers[0].timestamp
-    return { 'userpageform': UserForm(form_context), 'picture':candidate.picture.file.name.split("/")[-1]}
+    return { 
+        'userpageform': UserForm(form_context),
+        'picture':candidate.picture.file.name.split("/")[-1],
+        'receipt': request.GET.get('receipt', False)}
 
 
 @login_required
 def userupdate(request):
     userform = UserForm(request.POST, request.FILES)
-    print request.FILES
-    print request.POST
     candidate = request.user.candidate_set.all()[0]
     if userform.is_valid():
         data = userform.cleaned_data
@@ -65,8 +66,10 @@ def userupdate(request):
 def candanswer(request, election):
     last_answers = getattr(request.user.candidate_set.filter(election__slug=election).first(), "last_answers", None)
     if last_answers:
+        print "filling form", last_answers
         form = AnswerForm(initial=dict(last_answers), election=election)
     else:
+        print "not filling form"
         form = AnswerForm(election=election)
     return {
         'answerform':form,
@@ -85,7 +88,7 @@ def candreply(request, election):
         candidate=request.user.candidate_set.filter(election__slug=election).first(),
         answers=[[k,v] for k,v in data]
     ).save()
-    return HttpResponseRedirect("/userpage/")
+    return HttpResponseRedirect("/userpage/?receipt=1")
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -115,6 +118,17 @@ def compare(request, election):
     request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']] # hoping not to need this, use caching instead
     request.session['voterdata'] = voterdata # ditto, but maybe that is a bad plan
     return context
+
+remap = 'id_q_%s_%s'
+def oldanswers(request, election):
+    last_answers = dict(getattr(request.user.candidate_set.filter(election__slug=election).first(), "last_answers", None))
+    for key in last_answers:
+        if "q_" in key:
+            number = key[2:]
+            last_answers[key] = remap % (number, last_answers[key])
+    if last_answers:
+        return HttpResponse(json.dumps(last_answers.items()), content_type="application/json")
+    return HttpResponse("[]", content_type="application/json")
 
 """
 @render_with("candidate_page.html")

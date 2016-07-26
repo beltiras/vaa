@@ -4,12 +4,13 @@
 {% block title %}Spurningar{% endblock title %}
 
 {% block extrahead %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
 <link rel="stylesheet" href="{% static 'charsleft-widget/css/charsleft.css' %}">
 <script src="{% static 'charsleft-widget/js/charsleft.js' %}"></script>
 {% endblock extrahead %}
 
 {% block content %}
-<form action="{{ answerform.helper.form_action }}/{{ election }}/" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
+<form action="{{ answerform.helper.form_action }}{{ election }}/" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
     {% for field in answerform %}
         {% if 'q_' in field.name %}
         <div id="{{ field.id_for_label }}" class="form-block form-question clearfix">
@@ -63,6 +64,31 @@
       'source':'textarea',
       'dest':".count",
     });
+var json={ 
+  "id" : 12,
+  "name": "Jack",
+  "description": "Description"
+};
+// perpopulate if there are old answers
+$.getJSON('/oldanswers/{{ election }}/', function(jsondata) {
+  console.log(jsondata);
+  //var arrayLength = jsondata.length;
+  for (var key in jsondata) {
+    console.log(jsondata[key]);
+    var $el = $('[name="'+key+'"]'),
+    type = $el.attr('type');
+
+    switch(type){
+        case 'radio':
+            console.log($el.filter('[value="'+jsondata[key]+'"]'));
+            $("#"+jsondata[key]).prop('checked', true);
+            break;
+        default:
+            $el.val(jsondata[key]);
+		      }
+		      }
+
+});
 
 </script>
 {% endblock extrabottom %}

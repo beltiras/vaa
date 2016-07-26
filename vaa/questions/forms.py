@@ -61,7 +61,6 @@ class UserForm(forms.Form):
 
 class AnswerForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        initial = kwargs.pop('initial', None)
         lang = kwargs.pop('language', "IS")
         election = kwargs.pop('election', 'reykjavik2016') # TODO: generalize the default
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
@@ -80,9 +79,6 @@ class AnswerForm(forms.Form):
                widget=CharsLeftInput(),
                required=False,
            )
-           if initial:
-               self.fields['t_%s' % question.pk].initial = initial.pop('t_%s' % question.pk)
-               self.fields['q_%s' % question.pk].initial = initial.pop('q_%s' % question.pk)
 
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-answerform'
