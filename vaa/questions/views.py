@@ -35,7 +35,7 @@ def userpage(request):
                 }
     if last_answers:
         form_context['last_answer'] = last_answers[0].timestamp
-    return { 'userpageform': UserForm(form_context)}
+    return { 'userpageform': UserForm(form_context), 'picture':candidate.picture.file.name.split("/")[-1]}
 
 
 @login_required
@@ -46,10 +46,11 @@ def userupdate(request):
     candidate = request.user.candidate_set.all()[0]
     if userform.is_valid():
         data = userform.cleaned_data
+        print dir(data['picture'])
         request.user.first_name = data['first_name']
         request.user.last_name = data['last_name']
         candidate.ssn = data['ssn']
-        with open(settings.MEDIA_UPLOADS + data['picture']) as cand_pic:
+        with open(settings.MEDIA_UPLOADS + data['picture'].name, "wb+") as cand_pic:
             for chunk in request.FILES['picture']:
                 cand_pic.write(chunk)
         candidate.picture = data['picture']
