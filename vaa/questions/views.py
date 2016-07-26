@@ -35,7 +35,7 @@ def userpage(request):
                 }
     if last_answers:
         form_context['last_answer'] = last_answers[0].timestamp
-    context { 
+    context = { 
         'userpageform': UserForm(form_context),
         'receipt': request.GET.get('receipt', False)
     }
