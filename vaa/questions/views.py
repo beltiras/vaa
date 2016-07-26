@@ -26,6 +26,7 @@ def home(request):
 def userpage(request):
     candidate = request.user.candidate_set.all()[0]
     last_answers = candidate.answersheet_set.order_by('-timestamp')
+    print candidate.blurb
     form_context =  {
                 'first_name':request.user.first_name,
                 'last_name':request.user.last_name,
@@ -36,8 +37,9 @@ def userpage(request):
     if last_answers:
         form_context['last_answer'] = last_answers[0].timestamp
     context = { 
-        'userpageform': UserForm(form_context),
-        'receipt': request.GET.get('receipt', False)
+        'userpageform': UserForm(initial=form_context),
+        'receipt': request.GET.get('receipt', False),
+        'blurb':candidate.blurb
     }
     if candidate.picture.name:
         context.update({'picture': candidate.picture.file.name.split("/")[-1]})
@@ -49,7 +51,6 @@ def userupdate(request):
     candidate = request.user.candidate_set.all()[0]
     if userform.is_valid():
         data = userform.cleaned_data
-        print dir(data['picture'])
         request.user.first_name = data['first_name']
         request.user.last_name = data['last_name']
         candidate.ssn = data['ssn']

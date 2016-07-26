@@ -20,7 +20,7 @@ Svör móttekin!
         <div class="form-group qtext-field">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             <span class="charsleft charsleft-textarea">
-                <textarea name="{{ field.name }}" id="{{ field.id_for_label }}"></textarea>
+                <textarea name="{{ field.name }}" id="{{ field.id_for_label }}">{{ blurb }}</textarea>
                 <div class="qtext-charsleft">
                     <span class="count">{{ field.field.max_length }}</span> stafabil eftir
                     <span class="maxlength">{{ field.field.max_length }}</span>
