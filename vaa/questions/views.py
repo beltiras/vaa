@@ -54,7 +54,7 @@ def userupdate(request):
         request.user.last_name = data['last_name']
         candidate.ssn = data['ssn']
         if 'picture' in request.FILES:
-            with open(settings.MEDIA_UPLOADS + data['picture'].name, "wb+") as cand_pic:
+            with open(settings.MEDIA_UPLOADS + "cand_pics" + data['picture'].name, "wb+") as cand_pic:
                 for chunk in request.FILES['picture']:
                     cand_pic.write(chunk)
         if 'picture' in data:

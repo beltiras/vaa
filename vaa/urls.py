@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 from vaa.questions import views as vaav
 from vaa.staticpages import views as vaas
@@ -34,6 +35,7 @@ urlpatterns = [
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
     url('^', include('django.contrib.auth.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', { 'extra_context':{'next':'/userpage/'}}),
+    url(r'^accounts/profile/$', RedirectView.as_view(url="/userpage/")),
     url(r'^admin/', admin.site.urls),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
