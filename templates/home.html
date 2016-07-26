@@ -16,9 +16,11 @@
       <p>Frambjóðendur hafa verið búnir til í kerfinu og boðsbréf verið send til þeirra með notandanafni og bráðabirgðalykilorði. Það boðsbréf gæti hafa lent í Spam möppu í póstforritum, vinsamlegast athugaðu það ef þú ert frambjóðandi og ert að reyna að skrá þig inn.</p>
       {% endif %}
     </div>
+    {% if request.user.is_superuser %}
     <div class="home-taketest">
         <a href="/voterform/reykjavik2016/" class="button">Taka prófið! (óvirkt til 2. ágúst)</a>
     </div>
+    {% endif %}
 </div>
 
 {% endblock content %}
