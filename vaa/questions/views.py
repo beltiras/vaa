@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
@@ -39,13 +40,18 @@ def userpage(request):
 
 @login_required
 def userupdate(request):
-    userform = UserForm(request.POST)
+    userform = UserForm(request.POST, request.FILES)
+    print request.FILES
+    print request.POST
     candidate = request.user.candidate_set.all()[0]
     if userform.is_valid():
         data = userform.cleaned_data
         request.user.first_name = data['first_name']
         request.user.last_name = data['last_name']
         candidate.ssn = data['ssn']
+        with open(settings.MEDIA_UPLOADS + data['picture']) as cand_pic:
+            for chunk in request.FILES['picture']:
+                cand_pic.write(chunk)
         candidate.picture = data['picture']
         candidate.blurb = data['blurb']
         request.user.save()

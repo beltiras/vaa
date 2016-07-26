@@ -28,6 +28,9 @@
         {{ field }}
         </div>
         {% endif %}
+	{% if field.name == 'picture' %}
+	<img src="{{ picture.url }}">
+	{% endif %}
     {% endfor %}
         <div class="form-group form-submit clearfix">
             
