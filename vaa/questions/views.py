@@ -26,7 +26,6 @@ def home(request):
 def userpage(request):
     candidate = request.user.candidate_set.all()[0]
     last_answers = candidate.answersheet_set.order_by('-timestamp')
-    print candidate.blurb
     form_context =  {
                 'first_name':request.user.first_name,
                 'last_name':request.user.last_name,
