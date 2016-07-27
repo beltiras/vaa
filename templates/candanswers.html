@@ -21,13 +21,17 @@
             <div class="question-choices">
                 {{ field }}
             </div>
+	    <div>
+	        {{ field.errors }}
+	    </div>
             {% endif %}
 
             {% if 't_' in field.name %}
             <h3 class="qtext-title">{{ field.label }}</h3>
             <div class="qtext-field">
+	        {{ field.errors }}
                 <span class="charsleft charsleft-textarea">
-                    <textarea name="{{ field.name }}" id="id_{{ field.name }}"></textarea>
+                    <textarea name="{{ field.name }}" id="id_{{ field.name }}">{{ field.value }}</textarea>
                     <div class="qtext-charsleft">
                         <span class="count">{{ field.field.max_length }}</span> stafabil eftir
                         <span class="maxlength">{{ field.field.max_length }}</span>

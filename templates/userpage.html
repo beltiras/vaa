@@ -15,7 +15,7 @@ Svör móttekin!
 <form enctype="multipart/form-data" action="{{ userpageform.helper.form_action }}" id="{{ userpageform.helper.form_id }}" method="{{ userpageform.helper.form_method }}">{% csrf_token %}
     <div class="form-block form-user">
     {% for field in userpageform %}
-
+        {{ field.errors }}
         {% if field.name == 'blurb' %}
         <div class="form-group qtext-field">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>

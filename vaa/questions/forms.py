@@ -34,7 +34,7 @@ class UserForm(forms.Form):
     )
     blurb = forms.CharField(
         label=u"Kynningartexti frambjóðanda",
-        max_length=2000,
+        max_length=5000,
         widget=forms.Textarea,
         required=False,
 
