@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="form-block form-user">
 <p>Þú hefur verið innskráð/ur sem {{ request.user.get_full_name }}</p>
 <p><a href="/{{ request.instance }}/userpage/">Fara á notandasíðu</a></p>
+</div>
 {% endblock content %}

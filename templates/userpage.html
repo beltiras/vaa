@@ -8,8 +8,10 @@
 
 {% block content %}
 {% if receipt %}
-<div class="message">
-Svör móttekin!
+<div class="form-block form-user">
+    <div class="message">
+    Svör móttekin!
+    </div>
 </div>
 {% endif %}
 <form enctype="multipart/form-data" action="{{ userpageform.helper.form_action }}" id="{{ userpageform.helper.form_id }}" method="{{ userpageform.helper.form_method }}">{% csrf_token %}
