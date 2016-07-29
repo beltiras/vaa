@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Hver er þinn frambjóðandi?{% endblock title %}
+{% block title %}Hver er þinn frambjóðandi? - {% endblock title %}
 
 {% block content %}
 <div class="home-screen">
@@ -18,7 +18,8 @@
     </div>
     {% if request.user.is_superuser %}
     <div class="home-taketest">
-        <a href="/voterform/reykjavik2016/" class="button">Taka prófið! (óvirkt til 2. ágúst)</a>
+        <a href="/voterform/reykjavik2016/" class="button">Taka prófið!</a>
+        <div class="submit-info">(Óvirkt til 2. ágúst)</div>
     </div>
     {% endif %}
 </div>
