@@ -1,22 +1,25 @@
 import datetime
 
-from hashlib import sha1
-
+from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
-from django.http import HttpResponseRedirect, Http404
+from django.core.serializers.json import json
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import cache_page
 
-
 from .forms import UserForm, AnswerForm, VoterForm
-from .models import AnswerSheet, Candidate, Question, PermanentResult, QuestionSheet
+from .models import AnswerSheet, Candidate, Question
+
+from vaa.staticpages.models import Page
 from vaa.utils import render_with, max_d
 
 
 @cache_page(60*5)
 @render_with("home.html")
 def home(request):
-    return {}
+    return {
+        'page':Page.objects.filter(page_url="frontpage")
+    }
 
 
 @render_with("userpage.html")
@@ -32,19 +35,30 @@ def userpage(request):
                 }
     if last_answers:
         form_context['last_answer'] = last_answers[0].timestamp
-    return { 'userpageform': UserForm(form_context)}
-
+    context = { 
+        'userpageform': UserForm(initial=form_context),
+        'receipt': request.GET.get('receipt', False),
+        'blurb':candidate.blurb
+    }
+    if candidate.picture.name:
+        context.update({'picture': candidate.picture.file.name.split("/")[-1]})
+    return context
 
 @login_required
 def userupdate(request):
-    userform = UserForm(request.POST)
+    userform = UserForm(request.POST, request.FILES)
     candidate = request.user.candidate_set.all()[0]
     if userform.is_valid():
         data = userform.cleaned_data
         request.user.first_name = data['first_name']
         request.user.last_name = data['last_name']
         candidate.ssn = data['ssn']
-        candidate.picture = data['picture']
+        if 'picture' in request.FILES:
+            with open(settings.MEDIA_UPLOADS + "cand_pics" + data['picture'].name, "wb+") as cand_pic:
+                for chunk in request.FILES['picture']:
+                    cand_pic.write(chunk)
+        if 'picture' in data:
+            candidate.picture = data['picture']
         candidate.blurb = data['blurb']
         request.user.save()
         candidate.save()
@@ -76,14 +90,14 @@ def candreply(request, election):
         candidate=request.user.candidate_set.filter(election__slug=election).first(),
         answers=[[k,v] for k,v in data]
     ).save()
-    return HttpResponseRedirect("/userpage/")
+    return HttpResponseRedirect("/userpage/?receipt=1")
 
 
 @user_passes_test(lambda u: u.is_superuser)
 @render_with("voter_form.html")
 def voterform(request, election):
     form = VoterForm(election=election)
-    return { 'voterform':form, 'election':election }
+    return {'voterform':form, 'election':election}
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -91,14 +105,8 @@ def voterform(request, election):
 def compare(request, election):
     form = VoterForm(request.POST)
     valid_form = form.is_valid()
+    #    return render(request, "voter_form.html", {'voterform':form})
     voterdata = form.get_data()
-    voter_hash = sha1(str(voterdata)).hexdigest
-    voter_data_obj = QuestionSheet.objects.filter(lookup=voter_hash)
-    if not voter_data_obj:
-        voter_data_obj = QuestionSheet(questions=voterdata, lookup=voter_hash)
-        voter_data_obj.save()
-    else:
-        voter_data_obj = voter_data_obj[0]
     max_distance = max_d(voterdata)
     context = {'data': sorted(
         [(
@@ -109,34 +117,21 @@ def compare(request, election):
             ) if cand.last_answers],
         key=lambda i:i[1], reverse=True),
                'election':election}
-    perm_result = [(rank, cand.pk, percent) for rank, (cand, percent) in zip(xrange(1, len(context['data']) + 1), context['data'])]
-    pr_hash = sha1(str(perm_result)).hexdigest
-    pr_obj = PermanentResult.objects.filter(lookup=pr_hash)
-    if not pr_obj:
-        pr_obj = PermanentResult(ranks=perm_result, lookup=pr_hash)
-        pr_obj.save()
-    else:
-        pr_obj = pr_obj[0]
-    request.session['candlist'] = pr_hash
-    request.session['voterdata'] = voter_hash
+    request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']] # hoping not to need this, use caching instead
+    request.session['voterdata'] = voterdata # ditto, but maybe that is a bad plan
     return context
 
+remap = 'id_q_%s_%s'
+def oldanswers(request, election):
+    last_answers = dict(getattr(request.user.candidate_set.filter(election__slug=election).first(), "last_answers", None))
+    for key in last_answers:
+        if "q_" in key:
+            number = key[2:]
+            last_answers[key] = remap % (number, int(last_answers[key])-1)
+    if last_answers:
+        return HttpResponse(json.dumps(last_answers.items()), content_type="application/json")
+    return HttpResponse("[]", content_type="application/json")
 
-@user_passes_test(lambda u: u.is_superuser)
-@render_with("voter_form.html")
-def load_answers(request, election, lookup):
-    qs_obj = get_object_or_404(QuestionSheet, lookup=lookup)
-    form = VoterForm(election=election, initial=qs_obj.questions)
-    return { 'voterform':form, 'election':election }
-
-
-@user_passes_test(lambda u: u.is_superuser)
-@render_with("comparison_page.html")
-def comparison_page(request, election, lookup):
-    pr_obj = get_object_or_404(PermanentResult, lookup=lookup)
-    return { 'data': pr_obj.ranks }
-
-    
 """
 @render_with("candidate_page.html")
 def candidate_page(request, pk):

@@ -34,7 +34,7 @@ class UserForm(forms.Form):
     )
     blurb = forms.CharField(
         label=u"Kynningartexti frambjóðanda",
-        max_length=2000,
+        max_length=5000,
         widget=forms.Textarea,
         required=False,
 
@@ -61,7 +61,6 @@ class UserForm(forms.Form):
 
 class AnswerForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        initial = kwargs.pop('initial', None)
         lang = kwargs.pop('language', "IS")
         election = kwargs.pop('election', 'reykjavik2016') # TODO: generalize the default
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
@@ -80,9 +79,6 @@ class AnswerForm(forms.Form):
                widget=CharsLeftInput(),
                required=False,
            )
-           if initial:
-               self.fields['t_%s' % question.pk].initial = initial.pop('t_%s' % question.pk)
-               self.fields['q_%s' % question.pk].initial = initial.pop('q_%s' % question.pk)
 
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-answerform'
@@ -90,7 +86,7 @@ class AnswerForm(forms.Form):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/candans/'
+        self.helper.form_action = '/candanswer/%s/' % election
         layout = zip([Field("q_%s" % q) for q in qs], [Field("t_%s"%q) for q in qs])
         self.helper.layout = Layout(*layout)
         self.helper.add_input(Submit('submit', 'Vista'))

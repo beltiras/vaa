@@ -4,15 +4,16 @@
 {% block title %}Spurningar{% endblock title %}
 
 {% block extrahead %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
 <link rel="stylesheet" href="{% static 'charsleft-widget/css/charsleft.css' %}">
 <script src="{% static 'charsleft-widget/js/charsleft.js' %}"></script>
 {% endblock extrahead %}
 
 {% block content %}
-<form action="{{ answerform.helper.form_action }}/{{ election }}/" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
+<form action="{{ answerform.helper.form_action }}" id="{{ answerform.helper.form_id }}" method="{{ answerform.helper.form_method }}">{% csrf_token %}
     {% for field in answerform %}
         {% if 'q_' in field.name %}
-        <div id="{{ field.id_for_label }}" class="form-block form-question clearfix">
+        <div id="{{ field.id_for_label }}_label" class="form-block form-question clearfix">
         {% endif %}
 
             {% if 'q_' in field.name %}
@@ -20,13 +21,17 @@
             <div class="question-choices">
                 {{ field }}
             </div>
+	    <div>
+	        {{ field.errors }}
+	    </div>
             {% endif %}
 
             {% if 't_' in field.name %}
             <h3 class="qtext-title">{{ field.label }}</h3>
             <div class="qtext-field">
+	        {{ field.errors }}
                 <span class="charsleft charsleft-textarea">
-                    <textarea name="{{ field.name }}" id="id_{{ field.name }}"></textarea>
+                    <textarea name="{{ field.name }}" id="id_{{ field.name }}">{{ field.value }}</textarea>
                     <div class="qtext-charsleft">
                         <span class="count">{{ field.field.max_length }}</span> stafabil eftir
                         <span class="maxlength">{{ field.field.max_length }}</span>
@@ -63,6 +68,29 @@
       'source':'textarea',
       'dest':".count",
     });
+var json={ 
+  "id" : 12,
+  "name": "Jack",
+  "description": "Description"
+};
+// perpopulate if there are old answers
+$.getJSON('/oldanswers/{{ election }}/', function(jsondata) {
+  var arrayLength = jsondata.length;
+  for (var kv in jsondata) {
+    var key = jsondata[kv][0];
+    var value = jsondata[kv][1]
+    var $el = $('[name="'+key+'"]'),
+    type = $el.attr('type');
+    switch(type){
+        case 'radio':
+            $("#"+value).click()
+            break;
+        default:
+            $el.val(value);
+		      }
+		      }
+
+});
 
 </script>
 {% endblock extrabottom %}

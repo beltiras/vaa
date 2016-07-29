@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 from vaa.questions import views as vaav
 from vaa.staticpages import views as vaas
@@ -25,13 +26,16 @@ urlpatterns = [
     url(r'^userpage/$', vaav.userpage),
     url(r'^$', vaav.home),
     url(r'^userupdate/', vaav.userupdate),
-    url(r'^candans/(?P<election>[\w\d]+)/$', vaav.candreply),
-    url(r'^candanswer/(?P<election>[\w\d]+)/$', vaav.candanswer),
+    url(r'^candans/(?P<election>[\w\d]+)/$', vaav.candanswer),
+    url(r'^candanswer/(?P<election>[\w\d]+)/$', vaav.candreply),
     url(r'^voterform/(?P<election>[\w\d]+)/$', vaav.voterform),
     url(r'^compare/(?P<election>[\w\d]+)/$', vaav.compare),
+    url(r'^oldanswers/(?P<election>[\w\d]+)/$', vaav.oldanswers),
+
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
     url('^', include('django.contrib.auth.urls')),
-    #url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'extra_context':{'next':'/userpage/'}}),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', { 'extra_context':{'next':'/userpage/'}}),
+    url(r'^accounts/profile/$', RedirectView.as_view(url="/userpage/")),
     url(r'^admin/', admin.site.urls),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [

@@ -7,15 +7,20 @@
 {% endblock extrahead %}
 
 {% block content %}
-<form action="{{ userpageform.helper.form_action }}" id="{{ userpageform.helper.form_id }}" method="{{ userpageform.helper.form_method }}">{% csrf_token %}
+{% if receipt %}
+<div class="message">
+Svör móttekin!
+</div>
+{% endif %}
+<form enctype="multipart/form-data" action="{{ userpageform.helper.form_action }}" id="{{ userpageform.helper.form_id }}" method="{{ userpageform.helper.form_method }}">{% csrf_token %}
     <div class="form-block form-user">
     {% for field in userpageform %}
-
+        {{ field.errors }}
         {% if field.name == 'blurb' %}
         <div class="form-group qtext-field">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             <span class="charsleft charsleft-textarea">
-                <textarea name="{{ field.name }}" id="{{ field.id_for_label }}"></textarea>
+                <textarea name="{{ field.name }}" id="{{ field.id_for_label }}">{{ blurb }}</textarea>
                 <div class="qtext-charsleft">
                     <span class="count">{{ field.field.max_length }}</span> stafabil eftir
                     <span class="maxlength">{{ field.field.max_length }}</span>
@@ -28,6 +33,9 @@
         {{ field }}
         </div>
         {% endif %}
+	{% if field.name == 'picture' %}
+	<img src="/media/cand_pics/{{ picture }}">
+	{% endif %}
     {% endfor %}
         <div class="form-group form-submit clearfix">
             
