@@ -132,11 +132,11 @@ def oldanswers(request, election):
         return HttpResponse(json.dumps(last_answers.items()), content_type="application/json")
     return HttpResponse("[]", content_type="application/json")
 
-"""
+
 @render_with("candidate_page.html")
-def candidate_page(request, pk):
-    candidate = get_object_or_404(Candidate, pk=pk)
-    questions = Question.objects.filter(active=True).order_by('pk')
+def candidate_page(request, election, pk):
+    candidate = get_object_or_404(Candidate, pk=pk, election__slug=election)
+    questions = Question.objects.filter(active=True, election__slug=election).order_by('pk')
     if candidate.last_answers:
         la = dict(candidate.last_answers)
         context = {'answers':True, 'questions':[(q,la.get("t_%s"%q.pk, ""), la.get("q_%s"%q.pk,6)) for q in questions], 'cand':candidate}
@@ -146,4 +146,4 @@ def candidate_page(request, pk):
     else:
         return {'answers':False, 'cand':candidate }
 
-"""
+
