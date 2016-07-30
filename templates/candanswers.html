@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags staticfiles %}
 
-{% block title %}Spurningar{% endblock title %}
+{% block title %}Spurningar - {% endblock title %}
 
 {% block extrahead %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
@@ -31,7 +31,7 @@
             <div class="qtext-field">
 	        {{ field.errors }}
                 <span class="charsleft charsleft-textarea">
-                    <textarea name="{{ field.name }}" id="id_{{ field.name }}">{{ field.value }}</textarea>
+                    <textarea name="{{ field.name }}" id="id_{{ field.name }}">{{ field.value|default:'' }}</textarea>
                     <div class="qtext-charsleft">
                         <span class="count">{{ field.field.max_length }}</span> stafabil eftir
                         <span class="maxlength">{{ field.field.max_length }}</span>

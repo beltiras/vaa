@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+
+{% block title %}Samanburður - {% endblock title %}
+
 {% block content %}
-<table class="table table-striped">
+<div class="form-block form-user">
+<table class="table table-striped" style="width: 100%;">
 <thead>
-<tr><td>Frambjóðandi</td><td>Hversu sammála</td></tr>
+<tr><th>Frambjóðandi</th><th>Hversu sammála</th></tr>
 </thead>
 <tbody>
 {% for cand, percent in data %}
@@ -10,4 +14,5 @@
 {% endfor %}
 </tbody>
 </table>
+</div>
 {% endblock content %}

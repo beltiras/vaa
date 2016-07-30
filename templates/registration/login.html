@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="form-block form-user">
     {% if form.errors %}
         <p>Er notendanafn og/eða lykilorð rétt?</p>
     {% endif %}
@@ -22,5 +22,5 @@
        <input type="submit" value="login" />
        <input type="hidden" name="next" value="{{ next }}" />
    </form>
-
+</div>
 {% endblock %}
