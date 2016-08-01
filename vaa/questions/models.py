@@ -94,3 +94,4 @@ class AnswerSheet(models.Model):
 
     def __unicode__(self):
         return self.candidate.user.get_full_name()
+

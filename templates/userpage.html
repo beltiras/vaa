@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags staticfiles %}
+{% load crispy_forms_tags staticfiles thumbnail %}
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'charsleft-widget/css/charsleft.css' %}">
@@ -36,7 +36,7 @@
         </div>
         {% endif %}
 	{% if field.name == 'picture' %}
-	<img src="/media/cand_pics/{{ picture }}">
+	<img src="{{ candidate.picture|thumbnail_url:"small" }}">
 	{% endif %}
     {% endfor %}
         <div class="form-group form-submit clearfix">

@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import cache_page
 
 from .forms import UserForm, AnswerForm, VoterForm
-from .models import AnswerSheet, Candidate, Question
+from .models import AnswerSheet, Candidate, Question, AnswerText
 
 from vaa.staticpages.models import Page
 from vaa.utils import render_with, max_d
@@ -37,6 +37,7 @@ def userpage(request):
         form_context['last_answer'] = last_answers[0].timestamp
     context = { 
         'userpageform': UserForm(initial=form_context),
+        'candidate': candidate,
         'receipt': request.GET.get('receipt', False),
         'blurb':candidate.blurb
     }
@@ -95,7 +96,7 @@ def candreply(request, election):
 
 @user_passes_test(lambda u: u.is_superuser)
 @render_with("voter_form.html")
-def voterform(request, election):
+def voterform(request, election, hashcode=None):
     form = VoterForm(election=election)
     return {'voterform':form, 'election':election}
 
@@ -118,9 +119,14 @@ def compare(request, election):
             ) if cand.last_answers],
         key=lambda i:i[1], reverse=True),
                'election':election}
-    request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']] # hoping not to need this, use caching instead
+    request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']]
     request.session['voterdata'] = voterdata # ditto, but maybe that is a bad plan
     return context
+
+@render_with("comparison.html")
+def compare_load(request, election, hashcode):
+    pass
+
 
 remap = 'id_q_%s_%s'
 def oldanswers(request, election):
@@ -137,13 +143,37 @@ def oldanswers(request, election):
 @render_with("candidate_page.html")
 def candidate_page(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
-    questions = Question.objects.filter(active=True).order_by('pk')
-    if candidate.last_answers:
+    questions = Question.objects.filter(active=True, election=candidate.election).order_by('pk')
+    answertexts = [a.text for a in AnswerText.objects.order_by('mod')]
+    if not candidate.last_answers:
+        return HttpResponse("No answers")
+    if 'voterdata' in request.session:
+        print request.session['voterdata']
+        vd = dict(request.session['voterdata'])
         la = dict(candidate.last_answers)
-        context = {'answers':True, 'questions':[(q,la.get("t_%s"%q.pk, ""), la.get("q_%s"%q.pk,6)) for q in questions], 'cand':candidate}
-        if 'voterdata' in request.session:
-            pass
-        return context
+        context = {
+            'answers':True, 
+            'questions':[
+                (
+                    q,
+                    la.get("t_%s"%q.pk, ""),
+                    answertexts[int(vd.get("q_%s"%q.pk))-1],
+                    answertexts[int(la.get("q_%s"%q.pk))-1]
+                ) for q in questions
+            ],
+            'cand':candidate}
     else:
-        return {'answers':False, 'cand':candidate }
+        la = dict(candidate.last_answers)
+        context = {
+            'answers':True, 
+            'questions':[
+                (
+                    q,la.get("t_%s"%q.pk, ""),
+                    "",
+                    answertexts[int(la.get("q_%s"%q.pk))-1]
+                ) for q in questions
+            ],
+            'cand':candidate}
+
+    return context
 

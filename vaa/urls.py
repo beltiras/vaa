@@ -29,7 +29,9 @@ urlpatterns = [
     url(r'^candans/(?P<election>[\w\d]+)/$', vaav.candanswer),
     url(r'^candanswer/(?P<election>[\w\d]+)/$', vaav.candreply),
     url(r'^voterform/(?P<election>[\w\d]+)/$', vaav.voterform),
+    url(r'^voterform/(?P<election>[\w\d]+)/(?P<hashcode>[\w\d]+)/$', vaav.voterform),
     url(r'^compare/(?P<election>[\w\d]+)/$', vaav.compare),
+    url(r'^compare/(?P<election>[\w\d]+)/(?P<hashcode>[\w\d]+)/$', vaav.compare_load),
     url(r'^oldanswers/(?P<election>[\w\d]+)/$', vaav.oldanswers),
     url(r'^candidate/(?P<pk>\d+)/$', vaav.candidate_page),
 
@@ -41,4 +43,4 @@ urlpatterns = [
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'^page/(?P<slug>[\w\d_-]+)', vaas.page),
-]
+] + static("/var/www/vaamedia", document_root="/var/www/vaamedia")

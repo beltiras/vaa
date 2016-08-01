@@ -209,7 +209,19 @@ THUMBNAIL_SUBDIR = 'thumbs'
 THUMBNAIL_NAMER = 'easy_thumbnails.namers.hashed'
 THUMBNAIL_MEDIA_URL = '/thumbs/'
 
-THUMBNAIL_ALIASES = {'questions.Candidate':{'small':{'size':(200,200), 'detail':True}}}
+THUMBNAIL_ALIASES = {
+    'questions.Candidate':
+    {
+        'small':{
+            'size':(100,100), 
+            'detail':True
+        },
+        'large':{
+            'size':(300,300),
+            'detail': True
+        }
+    }
+}
 THUMBNAIL_BASEDIR = '/var/www/thumbs'
 
 try:
