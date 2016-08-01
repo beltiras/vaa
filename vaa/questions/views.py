@@ -105,13 +105,14 @@ def voterform(request, election):
 def compare(request, election):
     form = VoterForm(request.POST)
     valid_form = form.is_valid()
-    #    return render(request, "voter_form.html", {'voterform':form})
     voterdata = form.get_data()
-    max_distance = max_d(voterdata)
+    q_pk = [q.pk for q in Question.objects.filter(active=True, election__slug=election)]
+    max_distance = float(max_d(voterdata, q_pk))
     context = {'data': sorted(
         [(
-            cand, 1.0 - (
-                float(cand.compare(voterdata))/float(max_distance)
+            (cand, (
+                1.0 - (float(cand.compare(voterdata))/max_distance)
+            )*100.0
             )) for cand in Candidate.objects.filter(
                 election__slug=election
             ) if cand.last_answers],
@@ -132,7 +133,7 @@ def oldanswers(request, election):
         return HttpResponse(json.dumps(last_answers.items()), content_type="application/json")
     return HttpResponse("[]", content_type="application/json")
 
-"""
+
 @render_with("candidate_page.html")
 def candidate_page(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
@@ -146,4 +147,3 @@ def candidate_page(request, pk):
     else:
         return {'answers':False, 'cand':candidate }
 
-"""

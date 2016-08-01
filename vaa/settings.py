@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'vaa.questions',
     'vaa.staticpages',
     'crispy_forms',
-    'charsleft_widget'
+    'charsleft_widget',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -198,9 +199,18 @@ CACHES = {
 
 INDECISION_PARAMETER = 2 # How much difference to calculate if either voter or candidate is undecided on an issue
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/var/www/vaamedia'
 
-MEDIA_ROOT = '/var/www/'
 MEDIA_UPLOADS = '/var/www/vaamedia/'
+
+THUMBNAIL_DEBUG = True
+THUMBNAIL_SUBDIR = 'thumbs'
+THUMBNAIL_NAMER = 'easy_thumbnails.namers.hashed'
+THUMBNAIL_MEDIA_URL = '/thumbs/'
+
+THUMBNAIL_ALIASES = {'questions.Candidate':{'small':{'size':(200,200), 'detail':True}}}
+THUMBNAIL_BASEDIR = '/var/www/thumbs'
 
 try:
     from local_settings import *

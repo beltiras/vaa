@@ -9,16 +9,19 @@ def trunc(text, size):
     return text[:size] + (" ..." if len(text) > size else "")
 
 
-def max_d(dataset):
-    return sum([[4,3,2,3,4,settings.INDECISION_PARAMETER][q-1]*i for q, i in zipvalues(dataset)])
+def max_d(dataset, q_pks):
+    z = zipvalues(dataset, q_pks, True)
+    print z
+    return sum([[4,3,2,3,4,settings.INDECISION_PARAMETER][q-1]*i for q, i in z.values()])
 
 
-def zipvalues(dataset, d=False):
+def zipvalues(dataset, question_pks, d=False):
     dataset = dict(dataset)
+    print dataset, question_pks
     if not d:
-        return [(int(dataset.get('q_'+str(i), 6)), int(dataset.get('i_'+str(i), 3))) for i in xrange(1,len(dataset)/2+1)]    
+        return [(int(dataset.get('q_'+str(i), 6)), int(dataset.get('i_'+str(i), 3))) for i in question_pks]    
     else:
-        return dict([('q_%s' % i, (int(dataset.get('q_'+str(i), 6)), int(dataset.get('i_'+str(i), 3)))) for i in xrange(1,len(dataset)/2+1)])
+        return dict([('q_%s' % i, (int(dataset.get('q_'+str(i), 6)), int(dataset.get('i_'+str(i), 3)))) for i in question_pks])
 
 class render_with:
     def __init__(self, template):

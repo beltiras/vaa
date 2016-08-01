@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^voterform/(?P<election>[\w\d]+)/$', vaav.voterform),
     url(r'^compare/(?P<election>[\w\d]+)/$', vaav.compare),
     url(r'^oldanswers/(?P<election>[\w\d]+)/$', vaav.oldanswers),
+    url(r'^candidate/(?P<pk>\d+)/$', vaav.candidate_page),
 
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
     url('^', include('django.contrib.auth.urls')),

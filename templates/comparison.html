@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load thumbnail %}
 {% block title %}Samanburður - {% endblock title %}
 
 {% block content %}
@@ -10,7 +10,7 @@
 </thead>
 <tbody>
 {% for cand, percent in data %}
-<tr><td>{{ cand.name }}</td><td>{{ percent }}</td>
+  <tr><td><span><img src="{{ cand.picture|thumbnail_url:"small" }}"></span><a href="/candidate/{{ cand.pk }}/">{{ cand.name }}</a></td><td>{{ percent | floatformat:0 }}%</td>
 {% endfor %}
 </tbody>
 </table>

@@ -58,8 +58,9 @@ class Candidate(models.Model):
         return None
 
     def compare(self, other_data, method=simple_distance):
-        d = dict(zipvalues(other_data, d=True))
         q_pk = [q.pk for q in Question.objects.filter(active=True, election=self.election)]
+        d = dict(zipvalues(other_data, q_pk, d=True))
+        print "model.compare",d
         la = dict(self.last_answers)
         if not la:
             la = dict([('q_%s' % q_pk, 6) for pk in q_pk])
