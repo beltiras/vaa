@@ -4,6 +4,7 @@
 <div class="form-block form-user">
 <h2>{{ cand.name }}</h2>
 <img src="{{ cand.picture|thumbnail_url:"large" }}">
+<div>{{ cand.blurb }}</div>
 <table class="table">
 <thead>
 <tr><td>Spurning</td><td>Afstaða frambjóðanda</td>{% if request.session.voterdata %}<td>Mín afstaða</td>{% endif %}<td>Nánari afstaða frambjóðanda</td>
