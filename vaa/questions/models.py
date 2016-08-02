@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
@@ -41,7 +43,7 @@ class Candidate(models.Model):
     picture = models.ImageField(
         null=True,
         blank=True,
-        upload_to=settings.MEDIA_UPLOADS + 'cand_pics'
+        upload_to=os.path.join(settings.MEDIA_UPLOADS, 'cand_pics')
     )
     blurb = models.TextField()
     election = models.ForeignKey(Election)
