@@ -26,7 +26,7 @@ INSTANCE_NAME = 'reykjavik'
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'z9c5o(5rfxzs0y_801pdre#epak)5qoz1y5pt&_&afxg)crsxi'
+SECRET_KEY = 'thisisaverybadsecretdontyouknowitreallyis'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True#env('DEBUG')
@@ -67,7 +67,7 @@ ROOT_URLCONF = 'vaa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + "/templates/",],
+        'DIRS': [os.path.join(BASE_DIR, "templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,10 +136,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/vaa-static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 STATICFILES_DIRS = [
-    '/var/www/vaa/static',
+    STATIC_ROOT,
     ]
 
 LOGGING = {
@@ -200,14 +200,12 @@ CACHES = {
 INDECISION_PARAMETER = 2 # How much difference to calculate if either voter or candidate is undecided on an issue
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/vaamedia'
-
-MEDIA_UPLOADS = '/var/www/vaamedia/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  # or: '/var/www/vaamedia/'
+MEDIA_UPLOADS = MEDIA_ROOT
 
 THUMBNAIL_DEBUG = True
 THUMBNAIL_SUBDIR = 'thumbs'
 THUMBNAIL_NAMER = 'easy_thumbnails.namers.hashed'
-THUMBNAIL_MEDIA_URL = '/thumbs/'
 
 THUMBNAIL_ALIASES = {
     'questions.Candidate':
@@ -222,7 +220,6 @@ THUMBNAIL_ALIASES = {
         }
     }
 }
-THUMBNAIL_BASEDIR = '/var/www/thumbs'
 
 try:
     from local_settings import *

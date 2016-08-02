@@ -1,4 +1,8 @@
 *~
 *.pyc
+.keep
 |#*#
 */local_settings.py
+uploads/
+run/
+env

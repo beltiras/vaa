@@ -57,9 +57,9 @@
         function(e) {
             e.preventDefault();
             var set = $(this).parents(".question-choices");
-            set.find(":radio").removeAttr("checked","checked");
+            set.find(":radio").prop("checked",false);
             set.find("li.selected").removeClass("selected");
-            $(this).children(":radio").attr("checked","checked");
+            $(this).children(":radio").prop("checked",true);
             $(this).parents("li").addClass("selected");
         }
     );

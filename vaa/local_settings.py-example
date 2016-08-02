@@ -1,0 +1,40 @@
+# Some nice things
+ALLOWED_HOSTS = ['stefnumot.piratar.is', 'b.pagekite.me']
+ADMINS = (
+    ('admin', 'admin@example.com'),
+)
+
+INSTANCE_NAME = 'reykjavik'
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'topsekr1t0123456789abcdefghijklmnopqrstuvwxyz'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+THUMBNAIL_DEBUG = DEBUG
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "stefnumot",
+        # The following settings are not used with sqlite3:
+        'USER': "stefnumot",
+        'PASSWORD': "topsekr1t",
+        'HOST': "localhost",
+        'PORT': "5432",
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_UPLOADS = MEDIA_ROOT

@@ -66,8 +66,9 @@ class AnswerForm(forms.Form):
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
         choices = [(str(at.mod), at.text) for at in answertexts]
         super(AnswerForm, self).__init__(*args, **kwargs)
-        qs = [q.pk for q in Question.objects.filter(active=True, election__slug=election)]
-        for question in Question.objects.filter(active=True):
+        qobjs = Question.objects.filter(active=True, election__slug=election)
+        qs = [q.pk for q in qobjs]
+        for question in qobjs:
            self.fields['q_%s' % question.pk] = forms.ChoiceField(
                label=question.questiontext_set.filter(lang=lang)[0].text,
                widget=forms.RadioSelect,
@@ -102,8 +103,9 @@ class VoterForm(forms.Form):
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
         choices = [(str(at.mod), at.text) for at in answertexts]
         super(VoterForm, self).__init__(*args, **kwargs)
-        qs = [q.pk for q in Question.objects.filter(active=True)]
-        for question in Question.objects.filter(active=True, election__slug=election):
+        qobjs = Question.objects.filter(active=True, election__slug=election)
+        qs = [q.pk for q in qobjs]
+        for question in qobjs:
            self.fields['q_%s' % question.pk] = forms.ChoiceField(
                label=question.questiontext_set.filter(lang=lang)[0].text,
                widget=forms.RadioSelect,
