@@ -41,7 +41,8 @@ urlpatterns = [
     url(r'^accounts/profile/$', RedirectView.as_view(url="/userpage/")),
     url(r'^admin/', admin.site.urls),
     url(r'^absents/(?P<election>[\w\d]+)/$', vaav.absents),
-
+    url(r'^clearsession/', vaav.clear_session),
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'^page/(?P<slug>[\w\d_-]+)', vaas.page),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

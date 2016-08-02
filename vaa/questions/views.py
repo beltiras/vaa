@@ -192,3 +192,10 @@ def candidate_page(request, pk):
 @render_with("absents.html")
 def absents(request, election):
     return {'absents':Candidate.objects.filter(election__slug=election, answersheet__isnull=True)}
+
+
+def clear_session(request):
+    del request.session['voterdata']
+    del request.session['candlist']
+    request.session.modified = True
+    return HttpResponseRedirect("/")
