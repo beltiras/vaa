@@ -19,5 +19,5 @@ class Migration(migrations.Migration):
             name='picture',
             field=models.ImageField(blank=True, null=True,
                 upload_to=os.path.join(settings.MEDIA_UPLOADS, 'cand_pics'),
-        ),
+        )),
     ]
