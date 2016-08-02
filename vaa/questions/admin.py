@@ -27,7 +27,7 @@ def send_introductory_email(modeladmin, request, queryset):
                 'token': default_token_generator.make_token(cand.user),
                 'protocol': 'http',
             }
-        body = loader.render_to_string("/var/www/vaa/templates/introductory_email.txt", context)
+        body = loader.render_to_string("introductory_email.txt", context)
         email_message = EmailMultiAlternatives(
             u"Innskráning í VAA kerfi vegna prófkjörs",
             body,

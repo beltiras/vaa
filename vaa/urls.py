@@ -43,4 +43,4 @@ urlpatterns = [
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'^page/(?P<slug>[\w\d_-]+)', vaas.page),
-] + static("/var/www/vaamedia", document_root="/var/www/vaamedia")
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
