@@ -106,14 +106,12 @@ def candreply(request, election):
     return HttpResponseRedirect("/userpage/?receipt=1")
 
 
-@user_passes_test(lambda u: u.is_superuser)
 @render_with("voter_form.html")
 def voterform(request, election, hashcode=None):
     form = VoterForm(election=election)
     return {'voterform':form, 'election':election}
 
 
-@user_passes_test(lambda u: u.is_superuser)
 @render_with("comparison.html")
 def compare(request, election):
     form = VoterForm(request.POST)
