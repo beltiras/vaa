@@ -16,7 +16,7 @@
 </thead>
 <tbody>
 {% for question, c_text, v_pos, c_pos in questions %}
-<tr><td>{{ question.get_text }}</td>{% if request.session.voterdata %}<td>{{ v_pos }}</td>{% endif %}<td>{{ c_pos }}</td><td>{{ c_text }}</td></tr>
+<tr><td>{{ question.get_text }}</td><td>{{ c_pos }}</td>{% if request.session.voterdata %}<td>{{ v_pos }}</td>{% endif %}<td>{{ c_text }}</td></tr>
 {% endfor %}
 </tbody>
 </table>
