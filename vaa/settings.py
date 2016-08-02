@@ -26,7 +26,7 @@ INSTANCE_NAME = 'reykjavik'
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'z9c5o(5rfxzs0y_801pdre#epak)5qoz1y5pt&_&afxg)crsxi'
+SECRET_KEY = 'thisisaverybadsecretdontyouknowitreallyis'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True#env('DEBUG')
