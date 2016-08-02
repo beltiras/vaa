@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Frambjóðendur sem hafa ekki svarað - {% endblock title %}
+{% block content %}
+<div class="form-block form-user">
+<table class="table table-striped" style="width: 100%;">
+<thead>
+<tr><td>Frambjóðendur sem hafa ekki svarað spurningum enn:</td></tr>
+</thead>
+<tbody>
+{% for cand in absents %}
+<tr><td>{{ cand.name }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}

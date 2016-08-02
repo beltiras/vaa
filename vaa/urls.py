@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', { 'extra_context':{'next':'/userpage/'}}),
     url(r'^accounts/profile/$', RedirectView.as_view(url="/userpage/")),
     url(r'^admin/', admin.site.urls),
+    url(r'^absents/(?P<election>[\w\d]+)/$', vaav.absents),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'^page/(?P<slug>[\w\d_-]+)', vaas.page),

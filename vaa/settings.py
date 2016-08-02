@@ -210,6 +210,10 @@ THUMBNAIL_NAMER = 'easy_thumbnails.namers.hashed'
 THUMBNAIL_ALIASES = {
     'questions.Candidate':
     {
+        'xs':{
+            'size':(50,50), 
+            'detail':True
+        },
         'small':{
             'size':(100,100), 
             'detail':True
@@ -223,5 +227,5 @@ THUMBNAIL_ALIASES = {
 
 try:
     from local_settings import *
-except ImportError:
-    pass
+except ImportError as e:
+    print "LOCAL_SETTINGS error",e

@@ -189,3 +189,6 @@ def candidate_page(request, pk):
 
     return context
 
+@render_with("absents.html")
+def absents(request, election):
+    return {'absents':Candidate.objects.filter(election__slug=election, answersheet__isnull=True)}
