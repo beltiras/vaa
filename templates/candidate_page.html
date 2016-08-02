@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% block content %}
+<div>
+
+  <span style="float:right"><a href="/clearsession/">Gleyma mér (svör þín flytjast ekki lengur milli síðna)</a></span>
+</div>
+
 <div class="form-block form-user">
 <h2>{{ cand.name }}</h2>
 <img src="{{ cand.picture|thumbnail_url:"large" }}">
