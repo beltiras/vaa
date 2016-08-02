@@ -5,6 +5,7 @@ backports.shutil-get-terminal-size==1.0.0
 crc16==0.1.1
 decorator==4.0.10
 django-crispy-forms==1.6.0
+easy-thumbnails=2.3
 ipython==4.2.1
 ipython-genutils==0.1.0
 pathlib2==2.1.0
@@ -16,6 +17,7 @@ simplegeneric==0.8.1
 six==1.10.0
 traitlets==4.2.2
 wsgiref==0.1.2
+raven==5.23.0
 git+https://github.com/timmyomahony/django-charsleft-widget.git
 django-environ==0.4.0
 Markdown==2.6.6
