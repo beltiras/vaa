@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -52,18 +53,28 @@ def userupdate(request):
     candidate = request.user.candidate_set.all()[0]
     if userform.is_valid():
         data = userform.cleaned_data
+
         request.user.first_name = data['first_name']
         request.user.last_name = data['last_name']
-        candidate.ssn = data['ssn']
-        if 'picture' in request.FILES:
-            with open(settings.MEDIA_UPLOADS + "cand_pics" + data['picture'].name, "wb+") as cand_pic:
-                for chunk in request.FILES['picture']:
-                    cand_pic.write(chunk)
-        if 'picture' in data:
-            candidate.picture = data['picture']
-        candidate.blurb = data['blurb']
         request.user.save()
+
+        candidate.ssn = data['ssn']
+        candidate.blurb = data['blurb']
         candidate.save()
+
+        if 'picture' in request.FILES:
+            # This is Bjarni being paranoid and renaming images so the uploader
+            # has no control over the name. This is probably not needed, as
+            # Django handles security, but it makes the contents of the upload
+            # folder a bit easier to browse for the admin.
+            data['picture'].name = "%s%s" % (
+                candidate.id,
+                os.path.splitext(data['picture'].name)[1].replace('/', ''))
+
+            # This is enough to make Django save the file to disk -bre
+            candidate.picture = data['picture']
+            candidate.save()
+
     return HttpResponseRedirect("/userpage/")
 
 
