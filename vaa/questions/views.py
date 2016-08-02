@@ -39,7 +39,8 @@ def userpage(request):
         'userpageform': UserForm(initial=form_context),
         'candidate': candidate,
         'receipt': request.GET.get('receipt', False),
-        'blurb':candidate.blurb
+        'blurb':candidate.blurb,
+        'election':candidate.election
     }
     if candidate.picture.name:
         context.update({'picture': candidate.picture.file.name.split("/")[-1]})
