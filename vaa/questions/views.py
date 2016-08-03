@@ -106,31 +106,26 @@ def candreply(request, election):
     return HttpResponseRedirect("/userpage/?receipt=1")
 
 
-@user_passes_test(lambda u: u.is_superuser)
 @render_with("voter_form.html")
 def voterform(request, election, hashcode=None):
     form = VoterForm(election=election)
     return {'voterform':form, 'election':election}
 
 
-@user_passes_test(lambda u: u.is_superuser)
 @render_with("comparison.html")
 def compare(request, election):
-    form = VoterForm(request.POST)
+    form = VoterForm(request.POST, election=election)
     valid_form = form.is_valid()
     voterdata = form.get_data()
     q_pk = [q.pk for q in Question.objects.filter(active=True, election__slug=election)]
     max_distance = float(max_d(voterdata, q_pk))
-    context = {'data': sorted(
-        [(
-            (cand, (
-                1.0 - (float(cand.compare(voterdata))/max_distance)
-            )*100.0
-            )) for cand in Candidate.objects.filter(
-                election__slug=election
-            ) if cand.last_answers],
-        key=lambda i:i[1], reverse=True),
-               'election':election}
+    context = {
+        'election': election,
+        'data': sorted(
+            [(cand, 100 * (1.0 - (float(cand.compare(voterdata))/max_distance)))
+                for cand in Candidate.objects.filter(election__slug=election)
+                if cand.last_answers],
+            key=lambda i:i[1], reverse=True)}
     request.session['candlist'] = [(d[0].pk, d[1]) for d in context['data']]
     request.session['voterdata'] = voterdata # ditto, but maybe that is a bad plan
     return context

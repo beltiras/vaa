@@ -4,6 +4,16 @@
 {% block title %}Spurningar - {% endblock title %}
 
 {% block content %}
+<div class="home-screen">
+    <h4 class="home-label">Prófkjörsapp Pírata</h4>
+    <h1 class="home-title">Hver er þinn frambjóðandi?</h1>
+    <div class="home-intro">
+         <p>Svaraðu spurningunum að neðan, eins og þú vildir helst að þinn
+         frambjóðandi myndi svara. Kerfið mun síðan raða frambjóðendum eftir
+         því hve vel svör þeirra passa við svörin þín.</p>
+    </div>
+</div>
+
 <form action="{{ voterform.helper.form_action }}{{ election }}/" id="{{ voterform.helper.form_id }}" method="{{ voterform.helper.form_method }}">{% csrf_token %}
     {% for field in voterform %}
         {% if 'q_' in field.name %}
