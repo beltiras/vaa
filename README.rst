@@ -22,7 +22,7 @@ OS requirements: Postgresql 9.4+, redis-server, Python 2.7, python-virtualenv, p
   python manage.py createsuperuser
   # make an election, using shell or Django Admin (yes, there should be a management command for this)
   python manage.py qimport questions.csv [election_slug] # replace with real election slug
-  python manage.py cand_import cand.csv [election_slug] # replace with real election slug
+  python manage.py candimport cand.csv [election_slug] # replace with real election slug
 
 Use
 -----
