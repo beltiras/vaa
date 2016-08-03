@@ -11,9 +11,18 @@ OS requirements: Postgresql 9.4+, redis-server, Python 2.7, python-virtualenv, p
   source vaa_env/bin/activate
   cd vaa
   pip install -r requirements.txt
-  # Make the database
+  sudo su - postgres
+  psql
+  CREATE DATABASE vaa;
+  CREATE ROLE vaa WITH LOGIN PASSWORD 'vaa1234';
+  GRANT ALL ON DATABASE vaa TO vaa;
+  \q
+  exit
   python manage.py migrate
   python manage.py createsuperuser
+  # make an election, using shell or Django Admin (yes, there should be a management command for this)
+  python manage.py qimport questions.csv [election_slug] # replace with real election slug
+  python manage.py cand_import cand.csv [election_slug] # replace with real election slug
 
 Use
 -----
