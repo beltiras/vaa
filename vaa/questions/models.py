@@ -60,13 +60,15 @@ class Candidate(models.Model):
         return None
 
     def compare(self, other_data, method=simple_distance):
-        q_pk = [q.pk for q in Question.objects.filter(active=True, election=self.election)]
+        q_pk = [q.pk for q in Question.objects.filter(active=True,
+                                                      election=self.election)]
         d = dict(zipvalues(other_data, q_pk, d=True))
-        print "model.compare",d
         la = dict(self.last_answers)
         if not la:
             la = dict([('q_%s' % q_pk, 6) for pk in q_pk])
-        return sum([method(la.get('q_%s' % pk, 6), d.get('q_%s' % pk, (3,6))) for pk in q_pk])
+        comp = sum([method(la.get('q_%s' % pk, 6), d.get('q_%s' % pk, (3,6)))
+                    for pk in q_pk])
+        return comp
 
     def name(self):
         return self.user.get_full_name()

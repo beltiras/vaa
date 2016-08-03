@@ -62,7 +62,7 @@ class UserForm(forms.Form):
 class AnswerForm(forms.Form):
     def __init__(self, *args, **kwargs):
         lang = kwargs.pop('language', "IS")
-        election = kwargs.pop('election', 'reykjavik2016') # TODO: generalize the default
+        election = kwargs.pop('election', 'INVALID')
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
         choices = [(str(at.mod), at.text) for at in answertexts]
         super(AnswerForm, self).__init__(*args, **kwargs)
@@ -99,7 +99,7 @@ class AnswerForm(forms.Form):
 class VoterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         lang = kwargs.pop('language', "IS")
-        election = kwargs.pop('election', 'reykjavik2016')
+        election = kwargs.pop('election', 'INVALID')
         answertexts = AnswerText.objects.filter(lang=lang).order_by('mod') 
         choices = [(str(at.mod), at.text) for at in answertexts]
         super(VoterForm, self).__init__(*args, **kwargs)
