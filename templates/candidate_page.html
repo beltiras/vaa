@@ -9,14 +9,14 @@
 <div class="form-block form-user">
 <h2>{{ cand.name }}</h2>
 <img src="{{ cand.picture|thumbnail_url:"large" }}">
-<div>{{ cand.blurb }}</div>
+<div style="align:left">{{ cand.blurb }}</div>
 <table class="table">
 <thead>
 <tr><td>Spurning</td><td>Afstaða frambjóðanda</td>{% if request.session.voterdata %}<td>Mín afstaða</td>{% endif %}<td>Nánari afstaða frambjóðanda</td>
 </thead>
 <tbody>
 {% for question, c_text, v_pos, c_pos in questions %}
-<tr><td>{{ question.get_text }}</td><td>{{ c_pos }}</td>{% if request.session.voterdata %}<td>{{ v_pos }}</td>{% endif %}<td>{{ c_text }}</td></tr>
+<tr><td style="align:left">{{ question.get_text.text }}</td><td>{{ c_pos }}</td>{% if request.session.voterdata %}<td>{{ v_pos }}</td>{% endif %}<td style="align:left">{{ c_text }}</td></tr>
 {% endfor %}
 </tbody>
 </table>
