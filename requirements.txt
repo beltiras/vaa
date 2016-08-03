@@ -5,7 +5,7 @@ backports.shutil-get-terminal-size==1.0.0
 crc16==0.1.1
 decorator==4.0.10
 django-crispy-forms==1.6.0
-easy-thumbnails=2.3
+easy-thumbnails==2.3
 ipython==4.2.1
 ipython-genutils==0.1.0
 pathlib2==2.1.0
