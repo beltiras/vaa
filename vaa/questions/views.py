@@ -75,6 +75,14 @@ def userupdate(request):
             candidate.picture = data['picture']
             candidate.save()
 
+        # Work around a weird thing where the full path gets saved and
+        # relative things stop working. Not sure why the full path gets
+        # saved, we're doing something wrong somewhere... -bre
+        cp = candidate.picture
+        if cp.name.startswith(settings.MEDIA_ROOT):
+            cp.name = cp.name[len(settings.MEDIA_ROOT)+1:]
+            candidate.save()
+
     return HttpResponseRedirect("/userpage/")
 
 
