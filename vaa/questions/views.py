@@ -158,14 +158,20 @@ def candidate_page(request, pk):
         print request.session['voterdata']
         vd = dict(request.session['voterdata'])
         la = dict(candidate.last_answers)
+        def at(i):
+            try:
+                return answertexts[i]
+            except IndexError:
+                return '-'
+
         context = {
             'answers':True, 
             'questions':[
                 (
                     q,
                     la.get("t_%s"%q.pk, ""),
-                    answertexts[int(vd.get("q_%s"%q.pk))-1],
-                    answertexts[int(la.get("q_%s"%q.pk))-1]
+                    at(int(vd.get("q_%s" % q.pk, 6))-1),
+                    at(int(la.get("q_%s" % q.pk, 6))-1)
                 ) for q in questions
             ],
             'cand':candidate}
