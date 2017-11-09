@@ -75,6 +75,14 @@ def userupdate(request):
             candidate.picture = data['picture']
             candidate.save()
 
+        # Work around a weird thing where the full path gets saved and
+        # relative things stop working. Not sure why the full path gets
+        # saved, we're doing something wrong somewhere... -bre
+        cp = candidate.picture
+        if cp.name.startswith(settings.MEDIA_ROOT):
+            cp.name = cp.name[len(settings.MEDIA_ROOT)+1:]
+            candidate.save()
+
     return HttpResponseRedirect("/userpage/")
 
 
@@ -158,14 +166,20 @@ def candidate_page(request, pk):
         print request.session['voterdata']
         vd = dict(request.session['voterdata'])
         la = dict(candidate.last_answers)
+        def at(i):
+            try:
+                return answertexts[i]
+            except IndexError:
+                return '-'
+
         context = {
             'answers':True, 
             'questions':[
                 (
                     q,
                     la.get("t_%s"%q.pk, ""),
-                    answertexts[int(vd.get("q_%s"%q.pk))-1],
-                    answertexts[int(la.get("q_%s"%q.pk))-1]
+                    at(int(vd.get("q_%s" % q.pk, 6))-1),
+                    at(int(la.get("q_%s" % q.pk, 6))-1)
                 ) for q in questions
             ],
             'cand':candidate}
