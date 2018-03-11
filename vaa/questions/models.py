@@ -47,7 +47,8 @@ class Candidate(models.Model):
     )
     blurb = models.TextField()
     election = models.ForeignKey(Election)
-
+    yt_video = models.CharField(max_length=64)
+    
 
     def __unicode__(self):
         return self.user.get_full_name()

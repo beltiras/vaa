@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import urls as authurls
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
@@ -36,7 +37,7 @@ urlpatterns = [
     url(r'^candidate/(?P<pk>\d+)/$', vaav.candidate_page),
 
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
-    url('^', include('django.contrib.auth.urls')),
+    url('^', include(authurls)),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', { 'extra_context':{'next':'/userpage/'}}),
     url(r'^accounts/profile/$', RedirectView.as_view(url="/userpage/")),
     url(r'^admin/', admin.site.urls),
