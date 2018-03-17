@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import urls as authurls
+from django.contrib.auth.views import login as authlogin
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
@@ -38,12 +39,14 @@ urlpatterns = [
 
     #url(r'^candidate/(?P<pk>\d+)/', vaav.candidate_page),
     url('^', include(authurls)),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', { 'extra_context':{'next':'/userpage/'}}),
+    url(r'^accounts/login/$', authlogin, { 'extra_context':{'next':'/userpage/'}}),
     url(r'^accounts/profile/$', RedirectView.as_view(url="/userpage/")),
     url(r'^admin/', admin.site.urls),
     url(r'^absents/(?P<election>[\w\d]+)/$', vaav.absents),
     url(r'^clearsession/', vaav.clear_session),
-    
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'^page/(?P<slug>[\w\d_-]+)', vaas.page),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+]
+#+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
+#]
+#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

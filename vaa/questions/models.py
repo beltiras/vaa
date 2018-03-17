@@ -43,7 +43,7 @@ class Candidate(models.Model):
     picture = models.ImageField(
         null=True,
         blank=True,
-        upload_to=os.path.join(settings.MEDIA_UPLOADS, 'cand_pics')
+        upload_to='cand_pics'
     )
     blurb = models.TextField()
     election = models.ForeignKey(Election)

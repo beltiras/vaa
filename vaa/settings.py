@@ -31,7 +31,7 @@ SECRET_KEY = 'thisisaverybadsecretdontyouknowitreallyis'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True#env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.100',]
 
 
 # Application definition
@@ -139,7 +139,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 STATICFILES_DIRS = [
-    STATIC_ROOT,
+    '/var/www/static/',
     ]
 
 LOGGING = {
