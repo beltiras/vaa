@@ -29,3 +29,7 @@ Use
 There are two management commands of note, qimport and cand_import.  They take csv files as arguments as well as the slug of the election the data are meant for.  cand.csv and questions.csv show the format.  Google docs outputs the proper encoding for latin-1 characters.
 
 To invite candidates to participate, go to /admin/questions/candidate/, select the candidates to invite and select "Senda inngangstölvupóst" from the menu and press Go.
+
+NOTE
+-----
+I have not checked if there are any changes required for higher versions of Django.
